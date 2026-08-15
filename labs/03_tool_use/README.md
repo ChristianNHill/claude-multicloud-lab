@@ -33,7 +33,7 @@ The Anthropic SDK (Bedrock + Vertex) and the Azure AI Inference SDK (Foundry) us
 
 | Concept | Anthropic SDK | Azure AI Inference |
 |---|---|---|
-| Tool definition | `{"name": ..., "input_schema": {...}}` | `ChatCompletionsFunctionToolDefinition` |
+| Tool definition | `{"name": ..., "input_schema": {...}}` | `ChatCompletionsToolDefinition` |
 | Stop signal | `stop_reason == "tool_use"` | `finish_reason == "tool_calls"` |
 | Tool call fields | `block.id`, `block.name`, `block.input` (dict) | `call.id`, `call.function.name`, `call.function.arguments` (JSON string) |
 | Result message | `{"type": "tool_result", "tool_use_id": ...}` | `ToolMessage(tool_call_id=...)` |

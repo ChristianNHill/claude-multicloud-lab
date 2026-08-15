@@ -1,7 +1,7 @@
 """
 Lab 03 — Tool Use: Azure AI Foundry
 
-Azure AI Foundry uses an OpenAI-compatible tool calling format (ChatCompletionsFunctionToolDefinition).
+Azure AI Foundry uses an OpenAI-compatible tool calling format (ChatCompletionsToolDefinition).
 The agentic loop is the same concept but the SDK types differ from the Anthropic SDK.
 """
 
@@ -14,7 +14,7 @@ from azure.ai.inference.models import (
     UserMessage,
     AssistantMessage,
     ToolMessage,
-    ChatCompletionsFunctionToolDefinition,
+    ChatCompletionsToolDefinition,
     FunctionDefinition,
 )
 from azure.core.credentials import AzureKeyCredential
@@ -23,7 +23,7 @@ load_dotenv()
 
 # OpenAI-compatible tool definition format
 TOOLS = [
-    ChatCompletionsFunctionToolDefinition(
+    ChatCompletionsToolDefinition(
         function=FunctionDefinition(
             name="get_weather",
             description="Get the current weather for a city. Returns temperature in Celsius and a condition string.",
