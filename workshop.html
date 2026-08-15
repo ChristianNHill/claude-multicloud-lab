@@ -52,10 +52,6 @@
   --radius-sm: 4px;  --radius-md: 6px;  --radius-lg: 10px;
   --max-w: 740px;    --nav-h: 52px;
 
-  /* dark-band text — the band is graphite in both themes, so these never swap */
-  --color-band-ink:   oklch(90% 0.006 252);
-  --color-band-body:  oklch(74% 0.008 252);
-  --color-band-muted: oklch(63% 0.012 254);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -241,7 +237,7 @@ a:hover { opacity: 0.8; }
   line-height: 1;
   min-width: 3.5rem;
 }
-.bonus .act-num { color: var(--color-band-muted); }
+.bonus .act-num { color: var(--color-muted); }
 .act-rule {
   height: 1px;
   background: var(--color-rule-2);
@@ -256,7 +252,7 @@ a:hover { opacity: 0.8; }
   background: var(--color-accent);
   margin-top: -0.5px;
 }
-.bonus .act-rule::before { background: var(--color-band-muted); }
+.bonus .act-rule::before { background: var(--color-muted); }
 
 .act-head { margin-bottom: var(--space-lg); }
 .act-title {
@@ -514,46 +510,6 @@ code.ic {
 }
 .q-body { font-size: var(--text-md); color: var(--color-ink-2); line-height: 1.75; }
 .q-body p + p { margin-top: var(--space-sm); }
-
-/* ── dark band (Cobalt signature) ────────────────────────── */
-.dark-band {
-  background: var(--color-graphite);
-  border-top: 1px solid var(--color-graphite-2);
-  border-bottom: 1px solid var(--color-graphite-2);
-  margin: var(--space-2xl) calc(-1 * var(--space-lg));
-  padding: var(--space-xl) var(--space-lg);
-}
-.dark-band .act-title,
-.dark-band .step-title { color: var(--color-band-ink); }
-.dark-band .act-goal { color: var(--color-band-muted); }
-.dark-band .act-body,
-.dark-band .step-dir { color: var(--color-band-body); }
-.dark-band .step { border-top-color: var(--color-graphite-3); }
-.dark-band code.ic {
-  background: var(--color-graphite-2);
-  border-color: var(--color-graphite-3);
-  color: var(--color-band-body);
-}
-.dark-band details.solution {
-  background: var(--color-graphite-2);
-  border-color: var(--color-graphite-3);
-}
-.dark-band details.solution > summary { color: var(--color-band-muted); }
-.dark-band details.solution[open] > summary { color: var(--color-band-body); }
-.dark-band .note-card {
-  background: var(--color-graphite-2);
-  border-color: var(--color-graphite-3);
-  border-left-color: var(--color-accent);
-  color: var(--color-band-body);
-}
-.dark-band .note-card strong { color: var(--color-band-ink); }
-.dark-band .note-card code {
-  background: var(--color-graphite);
-  border-color: var(--color-graphite-3);
-  color: var(--color-band-body);
-}
-.dark-band .note-card .note-label { color: var(--color-tok-key); }
-.dark-band .step-num { color: var(--color-tok-key); }
 
 /* ── setup section ────────────────────────────────────────── */
 .setup {
@@ -1102,8 +1058,7 @@ response = client.messages.create(model=..., messages=[...])</pre>
   <!-- ══════════════════════════════════════════════════════
        BONUS — MCP (dark band)
   ══════════════════════════════════════════════════════ -->
-  <div class="dark-band">
-    <section class="act bonus reveal" id="bonus">
+  <section class="act bonus reveal" id="bonus">
       <div class="act-marker">
         <span class="act-num">∞</span>
         <div class="act-rule" aria-hidden="true"></div>
@@ -1215,8 +1170,7 @@ def get_doc_by_id(id: str) -> str:
           </details>
         </div>
       </div>
-    </section>
-  </div>
+  </section>
 
 
   <!-- ══════════════════════════════════════════════════════
