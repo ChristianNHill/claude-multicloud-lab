@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude on Three Clouds</title>
+<style>
+/* Hallmark · macrostructure: Narrative Workflow · genre: modern-minimal · theme: Cobalt
+ * tone: direct · technical · instructional · anchor hue: cobalt 256°
+ * nav: N6 Masthead · footer: none (workshop doc)
+ * pre-emit critique: P5 H5 E5 S5 R5 V5
+ */
+
+/* ── tokens ─────────────────────────────────────────────── */
+:root {
+  --color-paper:       oklch(98.5% 0.004 250);
+  --color-paper-2:     oklch(95.5% 0.007 252);
+  --color-ink:         oklch(24%   0.020 258);
+  --color-ink-2:       oklch(40%   0.018 256);
+  --color-muted:       oklch(46%   0.014 254);
+  --color-rule:        oklch(89%   0.008 252);
+  --color-rule-2:      oklch(80%   0.012 254);
+  --color-accent:      oklch(55%   0.200 256);
+  --color-accent-soft: oklch(96%   0.025 256);
+  --color-accent-ink:  oklch(99%   0.003 250);
+  --color-focus:       oklch(55%   0.200 256);
+  --color-graphite:    oklch(18%   0.016 260);
+  --color-graphite-2:  oklch(26%   0.018 258);
+  --color-graphite-3:  oklch(36%   0.016 257);
+  --color-tok-key:     oklch(70%   0.140 256);
+  --color-tok-str:     oklch(72%   0.120 155);
+  --color-tok-dim:     oklch(60%   0.014 258);
+  --color-ok:          oklch(58%   0.150 145);
+  --color-warn:        oklch(64%   0.160 78);
+  --color-err:         oklch(58%   0.180 25);
+
+  --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-body:    "SF Pro Text",    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --space-3xs: 0.25rem;  --space-2xs: 0.375rem; --space-xs: 0.625rem;
+  --space-sm:  0.875rem; --space-md:  1.25rem;  --space-lg: 2rem;
+  --space-xl:  3.25rem;  --space-2xl: 5rem;     --space-3xl: 8rem;
+
+  --text-xs:  0.6875rem; --text-sm:  0.8125rem; --text-md:  1rem;
+  --text-lg:  1.125rem;  --text-xl:  1.375rem;  --text-2xl: 1.875rem;
+  --text-3xl: 2.5rem;
+
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-short:  180ms;  --dur-med: 320ms;  --dur-long: 600ms;
+
+  --radius-sm: 4px;  --radius-md: 6px;  --radius-lg: 10px;
+  --max-w: 740px;    --nav-h: 52px;
+
+  /* dark-band text — the band is graphite in both themes, so these never swap */
+  --color-band-ink:   oklch(90% 0.006 252);
+  --color-band-body:  oklch(74% 0.008 252);
+  --color-band-muted: oklch(63% 0.012 254);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-paper:       oklch(17%   0.016 260);
+    --color-paper-2:     oklch(22%   0.018 258);
+    --color-ink:         oklch(93%   0.006 250);
+    --color-ink-2:       oklch(78%   0.008 252);
+    --color-muted:       oklch(64%   0.012 254);
+    --color-rule:        oklch(28%   0.018 258);
+    --color-rule-2:      oklch(36%   0.016 257);
+    --color-accent:      oklch(65%   0.180 256);
+    --color-accent-soft: oklch(24%   0.040 256);
+    --color-accent-ink:  oklch(10%   0.016 260);
+    --color-graphite:    oklch(12%   0.014 262);
+    --color-graphite-2:  oklch(20%   0.018 260);
+    --color-graphite-3:  oklch(30%   0.016 258);
+    --color-tok-key:     oklch(72%   0.160 256);
+    --color-tok-str:     oklch(74%   0.140 155);
+    --color-tok-dim:     oklch(58%   0.014 258);
+    --color-ok:          oklch(65%   0.150 145);
+    --color-warn:        oklch(70%   0.160 78);
+    --color-err:         oklch(64%   0.180 25);
+  }
+}
+:root[data-theme="dark"] {
+  --color-paper:       oklch(17%   0.016 260);
+  --color-paper-2:     oklch(22%   0.018 258);
+  --color-ink:         oklch(93%   0.006 250);
+  --color-ink-2:       oklch(78%   0.008 252);
+  --color-muted:       oklch(64%   0.012 254);
+  --color-rule:        oklch(28%   0.018 258);
+  --color-rule-2:      oklch(36%   0.016 257);
+  --color-accent:      oklch(65%   0.180 256);
+  --color-accent-soft: oklch(24%   0.040 256);
+  --color-accent-ink:  oklch(10%   0.016 260);
+  --color-graphite:    oklch(12%   0.014 262);
+  --color-graphite-2:  oklch(20%   0.018 260);
+  --color-graphite-3:  oklch(30%   0.016 258);
+  --color-tok-key:     oklch(72%   0.160 256);
+  --color-tok-str:     oklch(74%   0.140 155);
+  --color-tok-dim:     oklch(58%   0.014 258);
+  --color-ok:          oklch(65%   0.150 145);
+  --color-warn:        oklch(70%   0.160 78);
+  --color-err:         oklch(64%   0.180 25);
+}
+
+/* ── reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { overflow-x: clip; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--color-paper);
+  color: var(--color-ink-2);
+  font-family: var(--font-body);
+  font-size: var(--text-md);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--color-accent); text-underline-offset: 3px; }
+a:hover { opacity: 0.8; }
+*:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── nav ─────────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 50; height: var(--nav-h);
+  background: color-mix(in oklab, var(--color-paper) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-rule);
+  display: flex; align-items: center; gap: var(--space-md);
+  padding: 0 var(--space-lg);
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-brand .tick {
+  display: inline-block;
+  width: 6px; height: 6px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  margin-bottom: 1px;
+}
+.nav-acts {
+  display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; flex: 1;
+}
+.nav-acts::-webkit-scrollbar { display: none; }
+.nav-acts a {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  text-decoration: none;
+  padding: var(--space-3xs) var(--space-xs);
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+}
+.nav-acts a:hover { color: var(--color-accent); }
+.nav-reveal {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  border: 1px solid var(--color-rule-2);
+  background: transparent;
+  color: var(--color-ink-2);
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+}
+.nav-reveal:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* ── page layout ─────────────────────────────────────────── */
+.page { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--space-lg) var(--space-3xl); }
+
+/* ── hero / thesis ───────────────────────────────────────── */
+.hero {
+  padding: var(--space-2xl) 0 var(--space-xl);
+  border-bottom: 1px solid var(--color-rule);
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 6vw, 3.5rem);
+  font-weight: 600;
+  font-style: normal;
+  color: var(--color-ink);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.hero-sub {
+  margin-top: var(--space-sm);
+  font-size: var(--text-lg);
+  color: var(--color-ink-2);
+  max-width: 560px;
+  line-height: 1.55;
+}
+.thesis {
+  margin-top: var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  border-left: 2px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+.thesis p { font-size: var(--text-md); line-height: 1.7; color: var(--color-ink-2); }
+.thesis strong { color: var(--color-ink); }
+
+/* ── act structure ───────────────────────────────────────── */
+.act { padding: var(--space-2xl) 0 0; }
+
+.act-marker {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-sm);
+  align-items: center;
+  margin-bottom: var(--space-lg);
+}
+.act-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  color: var(--color-accent);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  min-width: 3.5rem;
+}
+.bonus .act-num { color: var(--color-muted); }
+.act-rule {
+  height: 1px;
+  background: var(--color-rule-2);
+  position: relative;
+}
+.act-rule::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  height: 2px;
+  width: 40px;
+  background: var(--color-accent);
+  margin-top: -0.5px;
+}
+.bonus .act-rule::before { background: var(--color-muted); }
+
+.act-head { margin-bottom: var(--space-lg); }
+.act-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  font-style: normal;
+  color: var(--color-ink);
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+.act-goal {
+  margin-top: var(--space-xs);
+  font-size: var(--text-md);
+  color: var(--color-muted);
+}
+.act-body {
+  font-size: var(--text-md);
+  color: var(--color-ink-2);
+  line-height: 1.7;
+  margin-bottom: var(--space-lg);
+}
+.act-body p + p { margin-top: var(--space-sm); }
+
+/* ── steps ───────────────────────────────────────────────── */
+.step {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr;
+  gap: var(--space-sm);
+  padding: var(--space-lg) 0;
+  border-top: 1px solid var(--color-rule);
+}
+.step-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-accent);
+  padding-top: 3px;
+}
+.step-body { min-width: 0; }
+.step-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  font-style: normal;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-xs);
+}
+.step-dir {
+  font-size: var(--text-md);
+  color: var(--color-ink-2);
+  margin-bottom: var(--space-md);
+  line-height: 1.7;
+}
+.step-dir em { color: var(--color-muted); font-style: normal; }
+
+/* ── code cards (graphite) ────────────────────────────────── */
+.code-card {
+  background: var(--color-graphite);
+  border: 1px solid var(--color-graphite-2);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: var(--space-sm) 0;
+}
+.code-card + .code-card { margin-top: var(--space-xs); }
+.code-bar {
+  display: flex; align-items: center; gap: var(--space-xs);
+  padding: 7px var(--space-md);
+  border-bottom: 1px solid var(--color-graphite-2);
+  background: var(--color-graphite-2);
+}
+.code-bar-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  color: var(--color-tok-dim);
+  flex: 1;
+}
+.code-bar-label .hi { color: var(--color-tok-key); }
+.code-copy {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-graphite-3);
+  background: transparent;
+  color: var(--color-tok-dim);
+  padding: 2px 9px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.03em;
+}
+.code-copy:hover { color: var(--color-accent); border-color: var(--color-accent); }
+.code-card pre {
+  margin: 0;
+  padding: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: oklch(78% 0.008 252);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+}
+.code-card .cmd  { color: oklch(78% 0.008 252); }
+.code-card .ok   { color: var(--color-ok); }
+.code-card .warn { color: var(--color-warn); }
+.code-card .dim  { color: var(--color-tok-dim); }
+.code-card .err  { color: var(--color-err); }
+.code-card .key  { color: var(--color-tok-key); }
+.code-card .str  { color: var(--color-tok-str); }
+.code-card .cmt  { color: var(--color-tok-dim); font-style: normal; }
+
+/* ── note cards (light) ───────────────────────────────────── */
+.note-card {
+  border: 1px solid var(--color-rule);
+  border-left: 2px solid var(--color-accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: var(--color-paper-2);
+  padding: var(--space-md) var(--space-lg);
+  margin: var(--space-md) 0;
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  line-height: 1.7;
+}
+.note-card strong { color: var(--color-ink); }
+.note-card code {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  background: var(--color-paper);
+  border: 1px solid var(--color-rule);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  color: var(--color-ink-2);
+}
+.note-card.insight {
+  border-left-color: var(--color-muted);
+}
+.note-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-3xs);
+  display: block;
+}
+.note-card.insight .note-label { color: var(--color-muted); }
+
+/* ── solution reveals ─────────────────────────────────────── */
+details.solution {
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: var(--space-sm) 0;
+  background: var(--color-paper);
+}
+details.solution > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: var(--space-xs) var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--color-muted);
+  user-select: none;
+}
+details.solution > summary::-webkit-details-marker { display: none; }
+details.solution > summary::before {
+  content: '▸';
+  font-size: 10px;
+  color: var(--color-accent);
+}
+details.solution[open] > summary::before { content: '▾'; }
+details.solution[open] > summary { color: var(--color-ink-2); }
+details.solution .sol-body { padding: 0 0 var(--space-sm); }
+
+/* ── prose code ───────────────────────────────────────────── */
+code.ic {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-rule);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+  color: var(--color-ink-2);
+}
+
+/* ── SDK table ────────────────────────────────────────────── */
+.sdk-table { width: 100%; border-collapse: collapse; margin: var(--space-sm) 0; }
+.sdk-table th {
+  text-align: left;
+  padding: var(--space-xs) var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  border-bottom: 1px solid var(--color-rule-2);
+  white-space: nowrap;
+}
+.sdk-table td {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: 1px solid var(--color-rule);
+  font-size: var(--text-sm);
+  color: var(--color-ink-2);
+  vertical-align: top;
+}
+.sdk-table tr:last-child td { border-bottom: 0; }
+.sdk-table code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--color-paper-2);
+  border: 1px solid var(--color-rule);
+  padding: 1px 5px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── debrief section ─────────────────────────────────────── */
+.debrief {
+  padding: var(--space-2xl) 0;
+  border-top: 1px solid var(--color-rule-2);
+  margin-top: var(--space-xl);
+}
+.debrief-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-lg);
+}
+.debrief-q {
+  margin: var(--space-lg) 0;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-rule);
+}
+.debrief-q:first-of-type { margin-top: 0; padding-top: 0; border-top: 0; }
+.q-head {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  font-style: normal;
+  color: var(--color-ink);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-sm);
+}
+.q-body { font-size: var(--text-md); color: var(--color-ink-2); line-height: 1.75; }
+.q-body p + p { margin-top: var(--space-sm); }
+
+/* ── dark band (Cobalt signature) ────────────────────────── */
+.dark-band {
+  background: var(--color-graphite);
+  border-top: 1px solid var(--color-graphite-2);
+  border-bottom: 1px solid var(--color-graphite-2);
+  margin: var(--space-2xl) calc(-1 * var(--space-lg));
+  padding: var(--space-xl) var(--space-lg);
+}
+.dark-band .act-title,
+.dark-band .step-title { color: var(--color-band-ink); }
+.dark-band .act-goal { color: var(--color-band-muted); }
+.dark-band .act-body,
+.dark-band .step-dir { color: var(--color-band-body); }
+.dark-band .step { border-top-color: var(--color-graphite-3); }
+.dark-band code.ic {
+  background: var(--color-graphite-2);
+  border-color: var(--color-graphite-3);
+  color: var(--color-band-body);
+}
+.dark-band details.solution {
+  background: var(--color-graphite-2);
+  border-color: var(--color-graphite-3);
+}
+.dark-band details.solution > summary { color: var(--color-band-muted); }
+.dark-band details.solution[open] > summary { color: var(--color-band-body); }
+.dark-band .note-card {
+  background: var(--color-graphite-2);
+  border-color: var(--color-graphite-3);
+  border-left-color: var(--color-accent);
+  color: var(--color-band-body);
+}
+.dark-band .note-card strong { color: var(--color-band-ink); }
+.dark-band .note-card code {
+  background: var(--color-graphite);
+  border-color: var(--color-graphite-3);
+  color: var(--color-band-body);
+}
+.dark-band .note-card .note-label { color: var(--color-tok-key); }
+
+/* ── setup section ────────────────────────────────────────── */
+.setup {
+  padding: var(--space-xl) 0;
+  border-bottom: 1px solid var(--color-rule);
+}
+.setup-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-md);
+}
+.setup-body { font-size: var(--text-md); color: var(--color-ink-2); margin-bottom: var(--space-md); }
+
+/* ── legend ─────────────────────────────────────────────────── */
+.legend {
+  display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg);
+  margin: var(--space-md) 0;
+}
+.legend-item {
+  display: flex; align-items: center; gap: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+}
+.legend-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--color-accent); flex-shrink: 0;
+}
+.legend-dot.d2 { background: var(--color-ok); }
+.legend-dot.d3 { background: var(--color-warn); }
+.legend-dot.d4 { background: var(--color-muted); }
+
+/* ── reveal animation ────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity var(--dur-long) var(--ease-out),
+    transform var(--dur-long) var(--ease-out);
+}
+.reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── responsive ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+  :root { --space-lg: 1.25rem; }
+  .nav { padding: 0 var(--space-md); }
+  .nav-acts { display: none; }
+  .step { grid-template-columns: 2.5rem 1fr; }
+  .act-marker { grid-template-columns: auto 1fr; }
+  .act-num { font-size: var(--text-2xl); min-width: 2.75rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── N6 Masthead nav ──────────────────────────────────────── -->
+<nav class="nav" aria-label="Workshop navigation">
+  <a class="nav-brand" href="#top"><span class="tick" aria-hidden="true"></span>Claude / Three Clouds</a>
+  <div class="nav-acts">
+    <a href="#setup">Setup</a>
+    <a href="#act-01">01 · API</a>
+    <a href="#act-02">02 · Platforms</a>
+    <a href="#act-03">03 · Agents</a>
+    <a href="#bonus">∞ · MCP</a>
+    <a href="#debrief">Debrief</a>
+  </div>
+  <button class="nav-reveal" id="toggleAllBtn" onclick="toggleAll()">REVEAL ALL</button>
+</nav>
+
+<div class="page" id="top">
+
+  <!-- ── hero ─────────────────────────────────────────────── -->
+  <section class="hero reveal">
+    <h1 class="hero-title">One model,<br>three clouds.</h1>
+    <p class="hero-sub">Run Claude on Bedrock, Vertex AI, and Azure Foundry. Then build a tool-calling agent and wire it to an MCP server.</p>
+    <div class="thesis">
+      <p><strong>The thesis:</strong> The same Anthropic SDK runs on three cloud platforms with almost no code change. The interesting work is what you build on top: tool loops, MCP servers, stateful agents. Learning the platforms takes an hour. The patterns last.</p>
+    </div>
+    <div class="legend" style="margin-top: var(--space-lg);">
+      <div class="legend-item"><span class="legend-dot" aria-hidden="true"></span>01 · Messages API</div>
+      <div class="legend-item"><span class="legend-dot d2" aria-hidden="true"></span>02 · Cloud platforms</div>
+      <div class="legend-item"><span class="legend-dot d3" aria-hidden="true"></span>03 · Tool use &amp; agents</div>
+      <div class="legend-item"><span class="legend-dot d4" aria-hidden="true"></span>∞ · MCP</div>
+    </div>
+  </section>
+
+  <!-- ── setup ─────────────────────────────────────────────── -->
+  <section class="setup reveal" id="setup">
+    <p class="setup-title">Setup</p>
+    <p class="setup-body">Clone the repo, install dependencies, configure credentials. One key is enough to start.</p>
+
+    <div class="code-card">
+      <div class="code-bar">
+        <span class="code-bar-label">terminal</span>
+        <button class="code-copy" onclick="copyCell(this)">copy</button>
+      </div>
+      <pre><span class="cmd">git clone https://github.com/ChristianNHill/claude-multicloud-lab
+cd claude-multicloud-lab
+python -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env</span></pre>
+    </div>
+
+    <p class="setup-body" style="margin-top: var(--space-md);">Open <code class="ic">.env</code> and add your Anthropic API key on the first line. That's enough to run Acts 1 and 3. Cloud platform credentials are optional. Add them when you reach Act 2.</p>
+
+    <div class="code-card">
+      <div class="code-bar">
+        <span class="code-bar-label"><span class="hi">.env</span> · minimum</span>
+        <button class="code-copy" onclick="copyCell(this)">copy</button>
+      </div>
+      <pre><span class="key">ANTHROPIC_API_KEY</span>=sk-ant-...   <span class="cmt"># console.anthropic.com</span></pre>
+    </div>
+
+    <div class="note-card" style="margin-top: var(--space-md);">
+      <strong>No cloud credentials yet?</strong> That's fine. The comparison script (Lab 04) gracefully skips any platform that isn't configured and shows <code>not configured</code> in the table. You'll see the Direct API row light up immediately.
+    </div>
+
+    <div class="note-card" style="margin-top: var(--space-xs);">
+      Every step shows a direction: what to do. The exact command and expected output are hidden behind <strong>SHOW</strong> toggles so you can try first. Use <strong>REVEAL ALL</strong> (top right) to open everything at once.
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       ACT 01 — THE MESSAGES API
+  ══════════════════════════════════════════════════════ -->
+  <section class="act reveal" id="act-01">
+    <div class="act-marker">
+      <span class="act-num">01</span>
+      <div class="act-rule" aria-hidden="true"></div>
+    </div>
+    <div class="act-head">
+      <h2 class="act-title">The Messages API</h2>
+      <p class="act-goal">First call, streaming, and token anatomy.</p>
+    </div>
+    <div class="act-body">
+      <p>Before you think about cloud platforms, learn the primitive. The Anthropic Messages API is the same interface regardless of which backend you use: Bedrock, Vertex, or direct. Get comfortable with it here. In Act 2 you'll swap the client constructor.</p>
+    </div>
+
+    <!-- 1.1 -->
+    <div class="step reveal">
+      <div class="step-num">1.1</div>
+      <div class="step-body">
+        <h3 class="step-title">Run your first inference call</h3>
+        <p class="step-dir">Run the basic inference script for the direct API. Read the output carefully: the text and all three metadata fields below it. What does <code class="ic">stop_reason</code> mean?</p>
+
+        <details class="solution">
+          <summary>SHOW command &amp; output</summary>
+          <div class="sol-body">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">terminal</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre><span class="cmd">python labs/01_basic_inference/bedrock.py</span>   <span class="cmt"># or vertex.py / foundry.py</span></pre>
+            </div>
+            <div class="code-card">
+              <div class="code-bar"><span class="code-bar-label">result</span></div>
+              <pre><span class="dim">[Bedrock] A foundation model is a large neural network trained on broad data
+that can be adapted to many tasks. Unlike task-specific models, it provides a
+general capability base that developers build applications on top of.
+
+  </span><span class="key">stop_reason</span>=<span class="ok">end_turn</span>  input_tokens=<span class="warn">28</span>  output_tokens=<span class="warn">44</span></pre>
+            </div>
+          </div>
+        </details>
+
+        <div class="note-card">
+          <span class="note-label">stop_reason anatomy</span>
+          <code class="ic">end_turn</code> = the model finished naturally. <code class="ic">max_tokens</code> = the response was cut off at your limit. <code class="ic">tool_use</code> = the model wants to call a function (Act 3). Always check stop_reason. A truncated response that looks complete is a common production bug.
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.2 -->
+    <div class="step reveal">
+      <div class="step-num">1.2</div>
+      <div class="step-body">
+        <h3 class="step-title">Stream the same call</h3>
+        <p class="step-dir">Run the streaming version. Watch how the output appears differently. Then look at the code: what changes between a non-streaming and streaming call in the SDK?</p>
+
+        <details class="solution">
+          <summary>SHOW command &amp; key difference</summary>
+          <div class="sol-body">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">terminal</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre><span class="cmd">python labs/02_streaming/bedrock.py</span></pre>
+            </div>
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">non-streaming vs streaming</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre><span class="cmt"># non-streaming — waits for full response</span>
+<span class="key">response</span> = client.messages.create(...)
+print(response.content[0].text)
+
+<span class="cmt"># streaming — tokens arrive as generated</span>
+with client.messages.stream(...) as <span class="key">stream</span>:
+    for text in stream.text_stream:
+        print(text, end=<span class="str">""</span>, flush=<span class="key">True</span>)
+final = stream.get_final_message()   <span class="cmt"># usage only available after stream closes</span></pre>
+            </div>
+          </div>
+        </details>
+
+        <div class="note-card insight">
+          <span class="note-label">What this teaches</span>
+          The SDK exposes streaming as a context manager with an iterator. You print tokens as they arrive. Without streaming, users wait for the full generation before seeing anything. For responses over ~100 tokens, the perceived latency difference is significant. Every production chat interface uses streaming. Note that <code>usage</code> (token counts) is only available after the stream closes via <code>get_final_message()</code>.
+        </div>
+      </div>
+    </div>
+
+    <!-- 1.3 -->
+    <div class="step reveal">
+      <div class="step-num">1.3</div>
+      <div class="step-body">
+        <h3 class="step-title">Feel what token limits do</h3>
+        <p class="step-dir">Open <code class="ic">labs/02_streaming/bedrock.py</code> and change <code class="ic">max_tokens=512</code> to <code class="ic">max_tokens=10</code>. Run it again. What changes in the output and in the metadata?</p>
+
+        <details class="solution">
+          <summary>SHOW the result</summary>
+          <div class="sol-body">
+            <div class="code-card">
+              <div class="code-bar"><span class="code-bar-label">truncated result</span></div>
+              <pre><span class="dim">[Bedrock] Walk me through how transformer attention</span>
+
+  <span class="warn">stop_reason=max_tokens</span>  output_tokens=<span class="warn">10</span>   <span class="cmt"># cut off mid-sentence</span></pre>
+            </div>
+          </div>
+        </details>
+
+        <div class="note-card">
+          <code class="ic">max_tokens</code> is a hard ceiling. The model doesn't summarize. It stops. This is a common source of truncated production responses. Always set <code class="ic">max_tokens</code> high enough for your expected output, and always check <code class="ic">stop_reason</code> in the response.
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       ACT 02 — THREE CLOUD PLATFORMS
+  ══════════════════════════════════════════════════════ -->
+  <section class="act reveal" id="act-02">
+    <div class="act-marker">
+      <span class="act-num">02</span>
+      <div class="act-rule" aria-hidden="true"></div>
+    </div>
+    <div class="act-head">
+      <h2 class="act-title">Three cloud platforms</h2>
+      <p class="act-goal">Same SDK, three backends.</p>
+    </div>
+    <div class="act-body">
+      <p>The Anthropic SDK ships first-party backends for Bedrock and Vertex AI. You swap one constructor. The rest of your code, <code class="ic">messages.create()</code>, tool definitions, streaming, all of it, stays identical. Azure Foundry uses a separate SDK with an OpenAI-compatible interface.</p>
+    </div>
+
+    <!-- 2.1 -->
+    <div class="step reveal">
+      <div class="step-num">2.1</div>
+      <div class="step-body">
+        <h3 class="step-title">Add cloud credentials</h3>
+        <p class="step-dir">Add whichever cloud credentials you have to <code class="ic">.env</code>. You don't need all three; any one will work. Then open the corresponding lab file and find the one line that differs from the direct API version.</p>
+
+        <details class="solution">
+          <summary>SHOW the SDK differences</summary>
+          <div class="sol-body">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">three constructors, one interface</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre><span class="cmt"># Direct API</span>
+from anthropic import <span class="key">Anthropic</span>
+client = Anthropic()                      <span class="cmt"># reads ANTHROPIC_API_KEY</span>
+
+<span class="cmt"># AWS Bedrock</span>
+from anthropic import <span class="key">AnthropicBedrock</span>
+client = AnthropicBedrock(aws_region=<span class="str">"us-east-1"</span>)  <span class="cmt"># reads AWS profile</span>
+
+<span class="cmt"># Google Vertex AI</span>
+from anthropic import <span class="key">AnthropicVertex</span>
+client = AnthropicVertex(project_id=<span class="str">"..."</span>, region=<span class="str">"us-east5"</span>)
+
+<span class="cmt"># After this — identical:</span>
+response = client.messages.create(model=..., messages=[...])</pre>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- 2.2 -->
+    <div class="step reveal">
+      <div class="step-num">2.2</div>
+      <div class="step-body">
+        <h3 class="step-title">Run the comparison demo</h3>
+        <p class="step-dir">Run the Lab 04 comparison script. It fires the same prompt at all configured platforms concurrently and displays a side-by-side table. Watch the Direct API row appear. Then add cloud credentials to light up more rows.</p>
+
+        <details class="solution">
+          <summary>SHOW the command &amp; output</summary>
+          <div class="sol-body">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">terminal</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre><span class="cmd">python labs/04_compare/compare.py</span>
+<span class="cmd">python labs/04_compare/compare.py "What is chain-of-thought prompting?"</span></pre>
+            </div>
+            <div class="code-card">
+              <div class="code-bar"><span class="code-bar-label">result · all four platforms configured</span></div>
+              <pre><span class="dim">╭──────────────────┬────────┬──────────┬───────────────┬──────────────────────╮
+│ Platform         │ Status │  Latency │ Tokens in/out │ Response (excerpt)   │
+├──────────────────┼────────┼──────────┼───────────────┼──────────────────────┤
+│ </span><span class="key">Direct API</span>       <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   2.15s  │   31 / 116    │ Enterprises spread…  │
+│</span> <span class="key">AWS Bedrock</span>      <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   1.82s  │   31 / 108    │ Enterprises deploy…  │
+│</span> <span class="key">Google Vertex AI</span> <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   2.10s  │   31 / 103    │ Multi-cloud AI…      │
+│</span> <span class="key">Foundry</span>          <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   1.95s  │   33 /  96    │ Organizations…       │
+╰──────────────────┴────────┴──────────┴───────────────┴──────────────────────╯</span></pre>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- 2.3 -->
+    <div class="step reveal">
+      <div class="step-num">2.3</div>
+      <div class="step-body">
+        <h3 class="step-title">Find where the SDKs diverge</h3>
+        <p class="step-dir">Bedrock and Vertex use identical Python. Foundry uses a different SDK. Open <code class="ic">labs/03_tool_use/foundry.py</code> and <code class="ic">labs/03_tool_use/bedrock.py</code>. Find the three specific things that differ in how tool calls are formatted.</p>
+
+        <details class="solution">
+          <summary>SHOW the divergences</summary>
+          <div class="sol-body" style="padding: var(--space-sm) var(--space-md);">
+            <div style="overflow-x: auto;">
+              <table class="sdk-table">
+                <thead>
+                  <tr>
+                    <th>Concept</th>
+                    <th>Anthropic SDK (Bedrock / Vertex)</th>
+                    <th>Azure AI Inference (Foundry)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Tool definition</td><td><code>{"name": ..., "input_schema": {...}}</code></td><td><code>ChatCompletionsFunctionToolDefinition</code></td></tr>
+                  <tr><td>Stop signal</td><td><code>stop_reason == "tool_use"</code></td><td><code>finish_reason == "tool_calls"</code></td></tr>
+                  <tr><td>Tool call fields</td><td><code>block.id</code>, <code>block.name</code>, <code>block.input</code> (dict)</td><td><code>call.id</code>, <code>call.function.name</code>, <code>call.function.arguments</code> (JSON string)</td></tr>
+                  <tr><td>Result message</td><td><code>{"type": "tool_result", "tool_use_id": ...}</code></td><td><code>ToolMessage(tool_call_id=...)</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <div class="note-card insight">
+          <span class="note-label">What this teaches</span>
+          Bedrock and Vertex are transparent: the Anthropic SDK wraps both so your application code is identical. Foundry uses an OpenAI-compatible format. The conceptual loop is the same (model requests tool → you run it → feed result back) but the types differ. In a real multi-cloud deployment, a thin adapter layer at the tool-dispatch boundary handles this. The agent logic above it stays platform-agnostic.
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       ACT 03 — TOOL USE & STATEFUL AGENTS
+  ══════════════════════════════════════════════════════ -->
+  <section class="act reveal" id="act-03">
+    <div class="act-marker">
+      <span class="act-num">03</span>
+      <div class="act-rule" aria-hidden="true"></div>
+    </div>
+    <div class="act-head">
+      <h2 class="act-title">Tool use &amp; stateful agents</h2>
+      <p class="act-goal">Beyond a single response.</p>
+    </div>
+    <div class="act-body">
+      <p>A single <code class="ic">messages.create()</code> call returns text. An agent is a loop: the model can emit a <code class="ic">tool_use</code> block, you execute the function, and you send the result back. The model keeps going until it decides it's done. This loop is the foundation of every production AI agent.</p>
+    </div>
+
+    <!-- 3.1 -->
+    <div class="step reveal">
+      <div class="step-num">3.1</div>
+      <div class="step-body">
+        <h3 class="step-title">Run the tool use lab</h3>
+        <p class="step-dir">Run the tool use script. Watch the terminal: you should see the model call a tool or two, then synthesize the results. Look at the code: where does the loop live? What ends it?</p>
+
+        <details class="solution">
+          <summary>SHOW the command &amp; what to look for</summary>
+          <div class="sol-body">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">terminal</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre><span class="cmd">python labs/03_tool_use/bedrock.py</span></pre>
+            </div>
+            <div class="code-card">
+              <div class="code-bar"><span class="code-bar-label">result</span></div>
+              <pre><span class="dim">[Bedrock tool use]
+
+  </span><span class="warn">→ calling get_weather({'city': 'San Francisco'})</span>
+<span class="warn">  → calling get_weather({'city': 'Seattle'})</span>
+
+<span class="dim">San Francisco is warmer at 17°C (partly cloudy) vs Seattle at 14°C
+(overcast). San Francisco wins by 3 degrees.</span></pre>
+            </div>
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">the agentic loop, simplified</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre>while <span class="key">True</span>:
+    response = client.messages.create(tools=<span class="key">TOOLS</span>, messages=messages)
+    messages.append({<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: response.content})
+
+    if response.stop_reason == <span class="str">"end_turn"</span>:
+        break           <span class="cmt"># model is done — print text</span>
+
+    if response.stop_reason == <span class="str">"tool_use"</span>:
+        results = []
+        for block in response.content:
+            if block.type == <span class="str">"tool_use"</span>:
+                output = run_tool(block.name, block.input)
+                results.append({<span class="str">"type"</span>: <span class="str">"tool_result"</span>, ...})
+        messages.append({<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: results})</pre>
+            </div>
+          </div>
+        </details>
+
+        <div class="note-card">
+          <strong>One subtlety.</strong> The model can return <code class="ic">tool_use</code> blocks even when <code class="ic">stop_reason</code> is <code class="ic">max_tokens</code> (it hit the token limit mid-tool-call). Always check for tool_use blocks in <code class="ic">response.content</code> directly. Don't gate on <code class="ic">stop_reason</code> alone.
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.2 -->
+    <div class="step reveal">
+      <div class="step-num">3.2</div>
+      <div class="step-body">
+        <h3 class="step-title">Run the stateful research agent</h3>
+        <p class="step-dir">Run the Lab 06 agent. Watch it plan, execute each step, and synthesize. Then read the code: where does "state" live? Is it inside the model, or somewhere else?</p>
+
+        <details class="solution">
+          <summary>SHOW the command &amp; agent trace</summary>
+          <div class="sol-body">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">terminal</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre><span class="cmd">python labs/06_stateful_agent/agent.py</span>
+<span class="cmd">python labs/06_stateful_agent/agent.py "transformer attention"</span></pre>
+            </div>
+            <div class="code-card">
+              <div class="code-bar"><span class="code-bar-label">agent trace</span></div>
+              <pre>  <span class="dim">step 1</span> → <span class="warn">make_plan</span>({"steps": ["What are LLMs?", "How do they train?", ...]})
+    plan: 5 steps | findings: 0
+
+  <span class="dim">step 2</span> → <span class="warn">record_finding</span>({"step": "What are LLMs?", "content": "..."})
+  <span class="dim">step 2</span> → <span class="warn">record_finding</span>({"step": "How do they train?", "content": "..."})
+  <span class="dim">step 2</span> → <span class="warn">record_finding</span>(...) × 3 more
+    plan: 5 steps | findings: 5
+
+  <span class="dim">step 3</span> → <span class="warn">get_state</span>({})
+    plan: 5 steps | findings: 5
+
+<span class="dim">╭──────────────────────── Research Report ───────────────────────╮
+│  ## Research Synthesis: Large Language Models                  │
+│  Based on the five research dimensions...                      │
+╰────────────────────────────────────────────────────────────────╯</span></pre>
+            </div>
+          </div>
+        </details>
+
+        <div class="note-card insight">
+          <span class="note-label">What this teaches</span>
+          State lives in a plain Python dict, outside the model, in your code. The model reads and writes it only through tools: <code>make_plan</code> sets the agenda, <code>record_finding</code> accumulates results, <code>get_state</code> lets it check progress. The model orchestrates; your code holds state. This separation is what makes agents resumable, inspectable, and safe to interrupt. Production agents extend this pattern with databases, queues, and human-approval checkpoints. The core loop is the same.
+        </div>
+      </div>
+    </div>
+
+    <!-- 3.3 -->
+    <div class="step reveal">
+      <div class="step-num">3.3</div>
+      <div class="step-body">
+        <h3 class="step-title">Add a tool to the agent</h3>
+        <p class="step-dir">Open <code class="ic">labs/06_stateful_agent/agent.py</code>. Add a fourth tool, <code class="ic">mark_complete()</code>, that fires once the agent has recorded all findings. Run it and observe how the loop terminates differently.</p>
+
+        <details class="solution">
+          <summary>SHOW the implementation</summary>
+          <div class="sol-body">
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">add to TOOLS list</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre>{
+    <span class="str">"name"</span>: <span class="str">"mark_complete"</span>,
+    <span class="str">"description"</span>: <span class="str">"Signal that all research steps are done and the report is ready."</span>,
+    <span class="str">"input_schema"</span>: {
+        <span class="str">"type"</span>: <span class="str">"object"</span>,
+        <span class="str">"properties"</span>: {
+            <span class="str">"summary"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>, <span class="str">"description"</span>: <span class="str">"One-line summary of findings"</span>}
+        },
+        <span class="str">"required"</span>: [<span class="str">"summary"</span>],
+    },
+},</pre>
+            </div>
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">add to dispatch_tool()</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre>if name == <span class="str">"mark_complete"</span>:
+    state[<span class="str">"complete"</span>] = <span class="key">True</span>
+    return f<span class="str">"Marked complete: {inputs['summary']}"</span></pre>
+            </div>
+            <div class="code-card">
+              <div class="code-bar">
+                <span class="code-bar-label">add exit condition in the loop</span>
+                <button class="code-copy" onclick="copyCell(this)">copy</button>
+              </div>
+              <pre>if state.get(<span class="str">"complete"</span>):
+    break</pre>
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       BONUS — MCP (dark band)
+  ══════════════════════════════════════════════════════ -->
+  <div class="dark-band">
+    <section class="act bonus reveal" id="bonus">
+      <div class="act-marker">
+        <span class="act-num">∞</span>
+        <div class="act-rule" aria-hidden="true"></div>
+      </div>
+      <div class="act-head">
+        <h2 class="act-title">MCP</h2>
+        <p class="act-goal">Tools as a separate process. ~10 min.</p>
+      </div>
+      <div class="act-body">
+        <p>In Act 3, tools were defined in the same file as the agent. With MCP (Model Context Protocol), the tool definitions and implementations live in a separate process. The client discovers them at runtime over a standard protocol. You can update tools without touching model code, and any MCP-compatible client can use the same server.</p>
+      </div>
+
+      <!-- B.1 -->
+      <div class="step reveal">
+        <div class="step-num">B.1</div>
+        <div class="step-body">
+          <h3 class="step-title">Start the MCP server</h3>
+          <p class="step-dir">Open a second terminal. Start the MCP server. It exposes two tools: a doc-search and a calculator. It will wait for a client to connect.</p>
+          <div class="code-card">
+            <div class="code-bar">
+              <span class="code-bar-label">Terminal 1</span>
+              <button class="code-copy" onclick="copyCell(this)">copy</button>
+            </div>
+            <pre><span class="cmd">python labs/05_mcp/server.py</span>
+
+<span class="dim">[server] MCP server starting on stdio   # waits here for client</span></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- B.2 -->
+      <div class="step reveal">
+        <div class="step-num">B.2</div>
+        <div class="step-body">
+          <h3 class="step-title">Connect the client and watch tool discovery</h3>
+          <p class="step-dir">In your original terminal, run the MCP client. Watch the first two lines of output closely: that's runtime tool discovery. The client doesn't know what tools the server has until it connects.</p>
+
+          <details class="solution">
+            <summary>SHOW the command &amp; output</summary>
+            <div class="sol-body">
+              <div class="code-card">
+                <div class="code-bar">
+                  <span class="code-bar-label">Terminal 2</span>
+                  <button class="code-copy" onclick="copyCell(this)">copy</button>
+                </div>
+                <pre><span class="cmd">python labs/05_mcp/client.py</span></pre>
+              </div>
+              <div class="code-card">
+                <div class="code-bar"><span class="code-bar-label">client output (Terminal 2)</span></div>
+                <pre><span class="ok">Discovered 2 tools from MCP server:</span>
+  • search_docs — Search the Claude Platform knowledge base.
+  • run_calculation — Evaluate a safe arithmetic expression.
+
+Question: What does the knowledge base say about MCP and tool use?
+          Also, what is 17 * 23?
+
+  <span class="warn">→ MCP call: search_docs({'query': 'MCP tool use'})</span>
+  <span class="warn">→ MCP call: run_calculation({'expression': '17 * 23'})</span>
+
+<span class="dim">Claude: MCP (Model Context Protocol) is an open standard that lets LLMs connect
+to external tools through a unified interface. Tool use lets Claude call
+external functions — it returns a tool_use block, your code executes the
+function, and feeds the result back.
+
+17 * 23 = 391</span></pre>
+              </div>
+              <div class="code-card">
+                <div class="code-bar"><span class="code-bar-label">server log (Terminal 1)</span></div>
+                <pre><span class="dim">[server] search_docs('MCP tool use')
+[server] run_calculation('17 * 23')</span></pre>
+              </div>
+            </div>
+          </details>
+
+          <div class="note-card insight">
+            <span class="note-label">What this teaches</span>
+            The client called <code>session.list_tools()</code> at startup. The server responded with its tool manifest, and the client converted that into the Anthropic tool format on the fly. No tools are hardcoded in the client. Add a tool to the server, restart it, and the client discovers it automatically without a code change. <strong>Tools and models are independently deployable.</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- B.3 -->
+      <div class="step reveal">
+        <div class="step-num">B.3</div>
+        <div class="step-body">
+          <h3 class="step-title">Add a tool to the server without touching the client</h3>
+          <p class="step-dir">Open <code class="ic">labs/05_mcp/server.py</code> and add a third tool, <code class="ic">get_doc_by_id(id: str)</code>, that returns the document with that ID from the <code class="ic">DOCS</code> list. Restart the server and re-run the client. Does the new tool appear in "Discovered" without any client change?</p>
+
+          <details class="solution">
+            <summary>SHOW the implementation</summary>
+            <div class="sol-body">
+              <div class="code-card">
+                <div class="code-bar">
+                  <span class="code-bar-label">add to server.py</span>
+                  <button class="code-copy" onclick="copyCell(this)">copy</button>
+                </div>
+                <pre>@app.tool(
+    name=<span class="str">"get_doc_by_id"</span>,
+    description=<span class="str">"Retrieve a specific document by its ID."</span>,
+)
+def get_doc_by_id(id: str) -> str:
+    log.info(<span class="str">"get_doc_by_id(%r)"</span>, id)
+    match = next((d for d in DOCS if d[<span class="str">"id"</span>] == id), <span class="key">None</span>)
+    if not match:
+        return f<span class="str">"No document found with id: {id!r}"</span>
+    return f<span class="str">"[{match['id']}] {match['title']}\n{match['body']}"</span></pre>
+              </div>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════════════
+       DEBRIEF
+  ══════════════════════════════════════════════════════ -->
+  <section class="debrief reveal" id="debrief">
+    <p class="debrief-title">Debrief</p>
+
+    <div class="debrief-q">
+      <h3 class="q-head">When do Bedrock and Vertex matter?</h3>
+      <div class="q-body">
+        <p>When data residency, VPC egress, or existing cloud billing agreements drive the decision. The code difference is one constructor. The operational difference, IAM, audit logs, network topology, is significant. Most enterprises that care about one of these things care about all three.</p>
+      </div>
+    </div>
+
+    <div class="debrief-q">
+      <h3 class="q-head">Why use AnthropicBedrock/AnthropicVertex instead of the raw cloud SDK?</h3>
+      <div class="q-body">
+        <p>The Anthropic SDK handles auth, retries, streaming normalization, and type safety across backends. Using <code class="ic">boto3.client("bedrock-runtime")</code> directly means managing all of that yourself, plus keeping up with Anthropic's API changes by hand. The first-party backends exist exactly to avoid that.</p>
+      </div>
+    </div>
+
+    <div class="debrief-q">
+      <h3 class="q-head">Why does Foundry use a different format for tool calls?</h3>
+      <div class="q-body">
+        <p>Azure AI Foundry uses an OpenAI-compatible API surface across all its models. That's a deliberate platform choice: existing OpenAI tooling works with any Foundry model, at the cost of diverging from the native Anthropic format. A thin adapter at the tool-dispatch layer handles this.</p>
+      </div>
+    </div>
+
+    <div class="debrief-q">
+      <h3 class="q-head">When is MCP worth the extra process?</h3>
+      <div class="q-body">
+        <p>When tools need to be shared across multiple models or clients, when they're deployed and updated independently, or when the tool itself is a service rather than a function. For a single-model script, hardcoded tools are simpler. For a platform where many agents share a tool catalog, MCP earns its overhead.</p>
+      </div>
+    </div>
+
+    <div class="debrief-q">
+      <h3 class="q-head">What's missing from this lab?</h3>
+      <div class="q-body">
+        <p>Prompt caching, which cuts costs dramatically on repeated large-context calls. Token counting (pre-flight cost estimation before sending a request). Managed agents with server-side tool execution. These are the next layer. Once you understand the primitives, those APIs will make sense.</p>
+      </div>
+    </div>
+
+    <div class="thesis" style="margin-top: var(--space-xl);">
+      <p><strong>Back to the thesis.</strong> One constructor swap moves the same code between Bedrock, Vertex, and Foundry. The agentic loop, model calls tool, you run it, feed it back, is the same on all three. MCP decouples tools from the agent so both can evolve independently. The stateful agent shows what that loop looks like when you add memory, planning, and multi-step orchestration. These are the building blocks. Everything production runs on them.</p>
+    </div>
+  </section>
+
+</div><!-- .page -->
+
+<script>
+  /* reveal on scroll */
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
+    { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* toggle all solutions */
+  function toggleAll() {
+    const btn = document.getElementById('toggleAllBtn');
+    const items = document.querySelectorAll('details.solution');
+    const anyClosed = [...items].some(d => !d.open);
+    items.forEach(d => d.open = anyClosed);
+    btn.textContent = anyClosed ? 'HIDE ALL' : 'REVEAL ALL';
+  }
+
+  /* copy button */
+  function copyCell(btn) {
+    const pre = btn.closest('.code-card').querySelector('pre');
+    const text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(() => {
+      const old = btn.textContent;
+      btn.textContent = 'copied';
+      btn.style.color = 'var(--color-ok)';
+      btn.style.borderColor = 'var(--color-ok)';
+      setTimeout(() => {
+        btn.textContent = old;
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }, 1400);
+    });
+  }
+</script>
+</body>
+</html>

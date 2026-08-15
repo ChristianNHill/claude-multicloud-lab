@@ -1,0 +1,30 @@
+# ── secrets — never commit keys or credentials ──
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# ── build-process docs — how it was built, not the project ──
+CLAUDE.md
+.claude/
+.hallmark/
+PLAN.md
+*.plan.md
+NOTES.md
+scratch/
+
+# ── python ──
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+.pytest_cache/
+
+# ── os ──
+.DS_Store
