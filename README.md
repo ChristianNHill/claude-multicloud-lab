@@ -4,7 +4,6 @@ A hands-on lab series for deploying and building with Claude across AWS Bedrock,
 
 Built as workshop-ready teaching material: each lab has a README with step-by-step instructions, a concept walkthrough, and exercises to extend the work.
 
-> **Status: early.** This is a very early cut of a larger vision: a complete enablement lab series for the Claude Platform, with more platforms, agent patterns, and workshop material to come. The six labs here are the foundation. Expect the structure and content to change.
 
 ---
 
