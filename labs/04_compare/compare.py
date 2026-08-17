@@ -144,7 +144,7 @@ def run(prompt: str):
     console.print(f"\n[dim]Prompt:[/dim] {prompt}\n")
 
     futures = {}
-    with ThreadPoolExecutor(max_workers=3) as pool:
+    with ThreadPoolExecutor(max_workers=len(PLATFORMS)) as pool:
         for key, (fn, required) in PLATFORMS.items():
             if not is_configured(required):
                 futures[key] = None  # skipped
