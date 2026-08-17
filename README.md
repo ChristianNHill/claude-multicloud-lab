@@ -51,7 +51,7 @@ It impersonates all four endpoints — real HTTP, real streaming, real tool loop
 | Google Vertex AI | `gcloud auth application-default login` + `VERTEX_PROJECT_ID` in `.env` + enable Claude in Model Garden |
 | Azure Foundry | Deploy Claude via Azure Marketplace → set `AZURE_FOUNDRY_ENDPOINT`, `AZURE_FOUNDRY_API_KEY`, `AZURE_FOUNDRY_MODEL` in `.env` |
 
-Labs 01-03 show all three cloud platforms side by side. Each script exits gracefully if a platform isn't configured yet.
+Labs 01-03 show all three cloud platforms side by side — run the script for whichever platform you've configured, since the others raise a credentials error. Lab 04 is the one that skips unconfigured platforms and keeps going.
 
 ---
 

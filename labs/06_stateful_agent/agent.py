@@ -189,8 +189,11 @@ def run(topic: str):
             console.print("[red]Max iterations reached — agent did not complete.[/red]")
 
     except Exception as exc:
+        # _make_client picked its backend off the same env var, so the hint
+        # has to follow it — not always Bedrock.
+        hint = "ANTHROPIC_API_KEY" if os.getenv("ANTHROPIC_API_KEY") else "AWS credentials"
         console.print(f"\n[red]Error:[/red] {exc}")
-        console.print("[dim](Configure AWS credentials to run the full agent loop)[/dim]")
+        console.print(f"[dim](Check your {hint} to run the full agent loop)[/dim]")
 
 
 def _summarize(inputs: dict) -> str:

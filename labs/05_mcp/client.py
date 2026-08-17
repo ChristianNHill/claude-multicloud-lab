@@ -115,8 +115,11 @@ async def run():
                         messages.append({"role": "user", "content": tool_results})
 
             except Exception as exc:
-                print(f"\nBedrock error: {exc}")
-                print("(Configure AWS credentials to run the full agentic loop)")
+                # _make_client picked its backend off the same env var, so the
+                # hint has to follow it — not always Bedrock.
+                hint = "ANTHROPIC_API_KEY" if os.getenv("ANTHROPIC_API_KEY") else "AWS credentials"
+                print(f"\nClaude API error: {exc}")
+                print(f"(Check your {hint} to run the full agentic loop)")
 
 
 if __name__ == "__main__":
