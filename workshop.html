@@ -633,7 +633,39 @@ cp .env.example .env</span></pre>
     </div>
 
     <div class="note-card" style="margin-top: var(--space-md);">
-      <strong>No cloud credentials yet?</strong> That's fine. The comparison script (Lab 04) gracefully skips any platform that isn't configured and shows <code>not configured</code> in the table. You'll see the Direct API row light up immediately.
+      <strong>No credentials at all?</strong> Start the mock server and every lab in this workshop runs offline — no cloud account, no API key, no network. It impersonates Bedrock, Vertex, Foundry and the direct API on one local port: real HTTP, real streaming, real tool loops, canned responses. Nothing in the lab scripts changes.
+    </div>
+
+    <div class="code-card">
+      <div class="code-bar">
+        <span class="code-bar-label">terminal · leave this running</span>
+        <button class="code-copy" onclick="copyCell(this)">copy</button>
+      </div>
+      <pre><span class="cmd">python mock_cloud/server.py</span></pre>
+    </div>
+
+    <div class="code-card">
+      <div class="code-bar">
+        <span class="code-bar-label"><span class="hi">.env</span> · offline mode</span>
+        <button class="code-copy" onclick="copyCell(this)">copy</button>
+      </div>
+      <pre><span class="cmt"># point the SDKs at the mock — comment these out to go back to real platforms</span>
+<span class="key">ANTHROPIC_BASE_URL</span>=http://127.0.0.1:8787/direct
+<span class="key">ANTHROPIC_BEDROCK_BASE_URL</span>=http://127.0.0.1:8787/bedrock
+<span class="key">ANTHROPIC_VERTEX_BASE_URL</span>=http://127.0.0.1:8787/vertex/v1
+<span class="key">AZURE_FOUNDRY_ENDPOINT</span>=http://127.0.0.1:8787/foundry
+
+<span class="cmt"># credentials must exist but are never checked — any string works</span>
+<span class="key">ANTHROPIC_API_KEY</span>=mock
+<span class="key">AWS_ACCESS_KEY_ID</span>=mock
+<span class="key">AWS_SECRET_ACCESS_KEY</span>=mock
+<span class="key">VERTEX_PROJECT_ID</span>=mock-project
+<span class="key">VERTEX_ACCESS_TOKEN</span>=mock
+<span class="key">AZURE_FOUNDRY_API_KEY</span>=mock</pre>
+    </div>
+
+    <div class="note-card" style="margin-top: var(--space-xs);">
+      <strong>Partially configured?</strong> That works too. The comparison script (Lab 04) gracefully skips any platform that isn't configured and shows <code>not configured</code> in the table. You'll see the Direct API row light up immediately.
     </div>
 
     <div class="note-card" style="margin-top: var(--space-xs);">
@@ -783,7 +815,7 @@ final = stream.get_final_message()   <span class="cmt"># usage only available af
       <div class="step-num">2.1</div>
       <div class="step-body">
         <h3 class="step-title">Add cloud credentials</h3>
-        <p class="step-dir">Add whichever cloud credentials you have to <code class="ic">.env</code>. You don't need all three; any one will work. Then open the corresponding lab file and find the one line that differs from the direct API version.</p>
+        <p class="step-dir">Add whichever cloud credentials you have to <code class="ic">.env</code>. You don't need all three; any one will work. Then open the corresponding lab file and find the constructor — it is the only part that differs from the direct API version.</p>
 
         <details class="solution">
           <summary>SHOW the SDK differences</summary>
@@ -803,7 +835,9 @@ client = AnthropicBedrock(aws_region=<span class="str">"us-east-1"</span>)  <spa
 
 <span class="cmt"># Google Vertex AI</span>
 from anthropic import <span class="key">AnthropicVertex</span>
-client = AnthropicVertex(project_id=<span class="str">"..."</span>, region=<span class="str">"us-east5"</span>)
+client = AnthropicVertex(project_id=<span class="str">"..."</span>, region=<span class="str">"us-east5"</span>,
+                         access_token=os.getenv(<span class="str">"VERTEX_ACCESS_TOKEN"</span>))
+                         <span class="cmt"># unset → Application Default Credentials; set it to reach the mock</span>
 
 <span class="cmt"># After this — identical:</span>
 response = client.messages.create(model=..., messages=[...])</pre>
@@ -839,7 +873,7 @@ response = client.messages.create(model=..., messages=[...])</pre>
 │ </span><span class="key">Direct API</span>       <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   2.15s  │   31 / 116    │ Enterprises spread…  │
 │</span> <span class="key">AWS Bedrock</span>      <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   1.82s  │   31 / 108    │ Enterprises deploy…  │
 │</span> <span class="key">Google Vertex AI</span> <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   2.10s  │   31 / 103    │ Multi-cloud AI…      │
-│</span> <span class="key">Foundry</span>          <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   1.95s  │   33 /  96    │ Organizations…       │
+│</span> <span class="key">Azure Foundry</span>    <span class="dim">│</span> <span class="ok">ok</span>     <span class="dim">│   1.95s  │   33 /  96    │ Organizations…       │
 ╰──────────────────┴────────┴──────────┴───────────────┴──────────────────────╯</span></pre>
             </div>
           </div>
@@ -953,7 +987,7 @@ response = client.messages.create(model=..., messages=[...])</pre>
         </details>
 
         <div class="note-card">
-          <strong>One subtlety.</strong> The model can return <code class="ic">tool_use</code> blocks even when <code class="ic">stop_reason</code> is <code class="ic">max_tokens</code> (it hit the token limit mid-tool-call). Always check for tool_use blocks in <code class="ic">response.content</code> directly. Don't gate on <code class="ic">stop_reason</code> alone.
+          <strong>One subtlety — and Lab 03 doesn't handle it.</strong> The loop above branches on <code class="ic">stop_reason == "tool_use"</code>, which is the clearest way to read the pattern and is what <code class="ic">labs/03_tool_use/bedrock.py</code> does. It breaks when a response hits the token ceiling mid-turn: <code class="ic">stop_reason</code> comes back <code class="ic">max_tokens</code> while <code class="ic">response.content</code> still holds complete <code class="ic">tool_use</code> blocks, and those calls get silently dropped. The production form checks <code class="ic">response.content</code> for tool_use blocks first and uses <code class="ic">stop_reason</code> only as the exit condition. You'll see it in Lab 06 — compare the two loops side by side.
         </div>
       </div>
     </div>

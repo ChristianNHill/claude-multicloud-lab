@@ -130,11 +130,13 @@ def call_foundry(prompt: str) -> dict:
 #  Concurrency + display                                                        #
 # --------------------------------------------------------------------------- #
 
+# Keys must match the "platform" each caller returns — a configured row is labelled
+# from the caller, a skipped row from the key, and they should not disagree.
 PLATFORMS = {
-    "Direct API": (call_direct,  ["ANTHROPIC_API_KEY"]),
-    "AWS Bedrock": (call_bedrock, []),                    # uses AWS profile
-    "Vertex AI":   (call_vertex,  ["VERTEX_PROJECT_ID"]),
-    "Foundry":     (call_foundry, ["AZURE_FOUNDRY_ENDPOINT", "AZURE_FOUNDRY_API_KEY"]),
+    "Direct API":       (call_direct,  ["ANTHROPIC_API_KEY"]),
+    "AWS Bedrock":      (call_bedrock, []),               # uses AWS profile
+    "Google Vertex AI": (call_vertex,  ["VERTEX_PROJECT_ID"]),
+    "Azure Foundry":    (call_foundry, ["AZURE_FOUNDRY_ENDPOINT", "AZURE_FOUNDRY_API_KEY"]),
 }
 
 
