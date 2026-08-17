@@ -4,6 +4,7 @@ A hands-on lab series for deploying and building with Claude across AWS Bedrock,
 
 Built as workshop-ready teaching material: each lab has a README with step-by-step instructions, a concept walkthrough, and exercises to extend the work.
 
+I built this to learn more about AWS Bedrock, Google Vertex AI, and Azure AI Foundry. Hopefully you find it useful!!
 
 ---
 
