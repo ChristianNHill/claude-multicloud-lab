@@ -116,8 +116,7 @@ def prior_tool_uses(messages: list[dict]) -> list[dict]:
     for m in messages:
         if m.get("role") != "assistant":
             continue
-        for b in _blocks(m):
-            block = b if isinstance(b, dict) else b.__dict__
+        for block in _blocks(m):
             if block.get("type") == "tool_use":
                 out.append(block)
     return out
@@ -184,11 +183,7 @@ def decide_tool_calls(messages: list[dict], tool_names: set[str]) -> list[dict]:
         if m:
             calls.append(_tool_use("run_calculation", {"expression": m.group(1)}))
 
-    if calls:
-        return calls
-
-    # Unknown toolset: call the first one with placeholder args from its schema.
-    return []
+    return calls
 
 
 def final_text(messages: list[dict], tool_names: set[str]) -> str:
@@ -320,6 +315,11 @@ def bedrock_stream_frames(reply: dict) -> list[bytes]:
 #  OpenAI shape (Foundry)                                                       #
 # --------------------------------------------------------------------------- #
 
+def openai_usage(reply: dict) -> dict:
+    i, o = reply["usage"]["input_tokens"], reply["usage"]["output_tokens"]
+    return {"prompt_tokens": i, "completion_tokens": o, "total_tokens": i + o}
+
+
 def to_openai(reply: dict) -> dict:
     text = "".join(b["text"] for b in reply["content"] if b["type"] == "text")
     tool_calls = [
@@ -340,11 +340,7 @@ def to_openai(reply: dict) -> dict:
             "index": 0, "message": message,
             "finish_reason": "tool_calls" if tool_calls else "stop",
         }],
-        "usage": {
-            "prompt_tokens": reply["usage"]["input_tokens"],
-            "completion_tokens": reply["usage"]["output_tokens"],
-            "total_tokens": reply["usage"]["input_tokens"] + reply["usage"]["output_tokens"],
-        },
+        "usage": openai_usage(reply),
     }
 
 
@@ -391,7 +387,7 @@ def openai_chunks(reply: dict) -> list[dict]:
                 {"index": 0, "delta": {"content": w if n == 0 else " " + w}, "finish_reason": None}
             ]})
     out.append({**base, "choices": [{"index": 0, "delta": {}, "finish_reason": "stop"}],
-                "usage": to_openai(reply)["usage"]})
+                "usage": openai_usage(reply)})
     return out
 
 
@@ -556,7 +552,6 @@ def selftest():
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--port", type=int, default=8787)
-    ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--no-delay", action="store_true", help="disable simulated latency")
     ap.add_argument("--selftest", action="store_true")
     args = ap.parse_args()
@@ -568,9 +563,9 @@ def main():
         for k in PLATFORM_DELAY:
             PLATFORM_DELAY[k] = 0.0
 
-    print(f"[mock] serving Bedrock, Vertex, Foundry and Direct API on http://{args.host}:{args.port}")
+    print(f"[mock] serving Bedrock, Vertex, Foundry and Direct API on http://127.0.0.1:{args.port}")
     print("[mock] responses are canned — no model is involved")
-    ThreadingHTTPServer((args.host, args.port), Handler).serve_forever()
+    ThreadingHTTPServer(("127.0.0.1", args.port), Handler).serve_forever()
 
 
 if __name__ == "__main__":

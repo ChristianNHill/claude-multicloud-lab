@@ -28,7 +28,9 @@ python labs/01_basic_inference/bedrock.py
 python labs/04_compare/compare.py
 ```
 
-Options: `--port 9000`, `--host 0.0.0.0` (share one server with a room), `--no-delay` (drop the simulated latency), `--selftest` (assert the reply logic and exit).
+Options: `--port 9000`, `--no-delay` (drop the simulated latency), `--selftest` (assert the reply logic and exit).
+
+Binds `127.0.0.1` only. To share one server with a room, add a `--host` argument and pass it to `ThreadingHTTPServer` — it's a one-line change, left out because nobody has asked for it.
 
 ## Point the labs at it
 

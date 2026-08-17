@@ -38,7 +38,7 @@ def new_state(topic: str) -> dict:
         "topic": topic,
         "plan": [],        # list of step strings set by make_plan
         "findings": {},    # step -> finding text
-        "complete": False,
+        "complete": False, # unused here on purpose — the mark_complete() exercise sets it
     }
 
 
