@@ -25,7 +25,7 @@ def run():
     print("[Vertex AI] ", end="", flush=True)
 
     with client.messages.stream(
-        model="claude-3-5-sonnet-v2@20241022",
+        model="claude-sonnet-4-6",
         max_tokens=512,
         messages=[{"role": "user", "content": PROMPT}],
     ) as stream:

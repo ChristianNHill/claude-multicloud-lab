@@ -133,7 +133,7 @@ def _make_client():
     else:
         from anthropic import AnthropicBedrock
         return AnthropicBedrock(aws_region=os.getenv("AWS_REGION", "us-east-1")), \
-               "anthropic.claude-3-5-sonnet-20241022-v2:0"
+               "global.anthropic.claude-sonnet-4-6"
 
 
 def run(topic: str):

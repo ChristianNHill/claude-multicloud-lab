@@ -67,14 +67,14 @@ Note `os.environ[...]` vs `os.getenv(...)`: the required values use `os.environ`
 ```python
 # Bedrock / Vertex
 response = client.messages.create(
-    model="anthropic.claude-3-5-sonnet-20241022-v2:0",
+    model="global.anthropic.claude-sonnet-4-6",
     max_tokens=256,
     messages=[{"role": "user", "content": PROMPT}],
 )
 
 # Foundry
 response = client.complete(
-    model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-3-5-sonnet"),
+    model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-sonnet-4-6"),
     messages=[
         SystemMessage(content="You are a helpful assistant."),
         UserMessage(content=PROMPT),
@@ -91,9 +91,11 @@ The model ID is the same model in three naming conventions:
 
 | Platform | Model ID | Convention |
 |---|---|---|
-| Bedrock | `anthropic.claude-3-5-sonnet-20241022-v2:0` | vendor prefix, date, version suffix |
-| Vertex | `claude-3-5-sonnet-v2@20241022` | `@version` suffix |
+| Bedrock | `global.anthropic.claude-sonnet-4-6` | routing prefix + vendor prefix |
+| Vertex | `claude-sonnet-4-6` | the bare Anthropic ID, no prefix |
 | Foundry | whatever you named the deployment | your choice at deploy time |
+
+The `global.` on the Bedrock ID selects a cross-region inference profile. Newer Claude models on Bedrock are served through inference profiles rather than on-demand throughput, so passing the bare `anthropic.claude-sonnet-4-6` returns a 400 telling you to use a profile. Swap `global.` for `us.`, `eu.`, `jp.`, or `apac.` if you need traffic pinned to a region — those carry a 10% premium over global routing.
 
 ### Step 4: Read the response and its metadata
 

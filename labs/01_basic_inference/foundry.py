@@ -26,7 +26,7 @@ def run():
     )
 
     response = client.complete(
-        model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-3-5-sonnet"),
+        model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-sonnet-4-6"),
         messages=[
             SystemMessage(content="You are a helpful assistant."),
             UserMessage(content=PROMPT),

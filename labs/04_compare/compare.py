@@ -59,7 +59,7 @@ def call_bedrock(prompt: str) -> dict:
     client = AnthropicBedrock(aws_region=os.getenv("AWS_REGION", "us-east-1"))
     t0 = time.perf_counter()
     response = client.messages.create(
-        model="anthropic.claude-3-5-sonnet-20241022-v2:0",
+        model="global.anthropic.claude-sonnet-4-6",
         max_tokens=256,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -84,7 +84,7 @@ def call_vertex(prompt: str) -> dict:
     )
     t0 = time.perf_counter()
     response = client.messages.create(
-        model="claude-3-5-sonnet-v2@20241022",
+        model="claude-sonnet-4-6",
         max_tokens=256,
         messages=[{"role": "user", "content": prompt}],
     )
@@ -108,7 +108,7 @@ def call_foundry(prompt: str) -> dict:
     )
     t0 = time.perf_counter()
     response = client.complete(
-        model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-3-5-sonnet"),
+        model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-sonnet-4-6"),
         messages=[
             SystemMessage(content="You are a helpful assistant."),
             UserMessage(content=prompt),

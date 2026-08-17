@@ -22,9 +22,9 @@ def run():
         access_token=os.getenv("VERTEX_ACCESS_TOKEN"),
     )
 
-    # Vertex model IDs use @version suffixes instead of date suffixes
+    # Vertex takes the bare Anthropic model ID — no vendor prefix, no version suffix
     response = client.messages.create(
-        model="claude-3-5-sonnet-v2@20241022",
+        model="claude-sonnet-4-6",
         max_tokens=256,
         messages=[{"role": "user", "content": PROMPT}],
     )

@@ -67,7 +67,7 @@ def run():
 
     while True:
         response = client.complete(
-            model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-3-5-sonnet"),
+            model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-sonnet-4-6"),
             messages=messages,
             tools=TOOLS,
             max_tokens=512,

@@ -35,7 +35,7 @@ Client construction is unchanged from Lab 01 — streaming is a property of the 
 ```python
 # bedrock.py / vertex.py — context manager
 with client.messages.stream(
-    model="anthropic.claude-3-5-sonnet-20241022-v2:0",
+    model="global.anthropic.claude-sonnet-4-6",
     max_tokens=512,
     messages=[{"role": "user", "content": PROMPT}],
 ) as stream:
@@ -43,7 +43,7 @@ with client.messages.stream(
 
 # foundry.py — a flag on the normal call
 response = client.complete(
-    model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-3-5-sonnet"),
+    model=os.getenv("AZURE_FOUNDRY_MODEL", "claude-sonnet-4-6"),
     messages=[...],
     max_tokens=512,
     stream=True,

@@ -56,7 +56,7 @@ def run():
 
     while True:
         response = client.messages.create(
-            model="claude-3-5-sonnet-v2@20241022",
+            model="claude-sonnet-4-6",
             max_tokens=512,
             tools=TOOLS,
             messages=messages,

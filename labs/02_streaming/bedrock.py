@@ -20,7 +20,7 @@ def run():
     print("[Bedrock] ", end="", flush=True)
 
     with client.messages.stream(
-        model="anthropic.claude-3-5-sonnet-20241022-v2:0",
+        model="global.anthropic.claude-sonnet-4-6",
         max_tokens=512,
         messages=[{"role": "user", "content": PROMPT}],
     ) as stream:
