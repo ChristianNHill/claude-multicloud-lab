@@ -78,6 +78,9 @@ def call_vertex(prompt: str) -> dict:
     client = AnthropicVertex(
         project_id=os.environ["VERTEX_PROJECT_ID"],
         region=os.getenv("VERTEX_REGION", "us-east5"),
+        # Unset in normal use — falls through to Application Default Credentials.
+        # Set it to any string to point at the mock server (see mock_cloud/).
+        access_token=os.getenv("VERTEX_ACCESS_TOKEN"),
     )
     t0 = time.perf_counter()
     response = client.messages.create(
