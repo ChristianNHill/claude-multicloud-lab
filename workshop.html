@@ -27,10 +27,10 @@
 
   <!-- ── hero ─────────────────────────────────────────────── -->
   <section class="hero reveal">
-    <h1 class="hero-title">One model,<br>three clouds.</h1>
+    <h1 class="hero-title">One model, three clouds.</h1>
     <p class="hero-sub">Run Claude on Bedrock, Vertex AI, and Azure Foundry. Then build a tool-calling agent and wire it to an MCP server.</p>
     <div class="thesis">
-      <p><strong>The thesis:</strong> The same Anthropic SDK runs on three cloud platforms with almost no code change. The interesting work is what you build on top: tool loops, MCP servers, stateful agents. Learning the platforms takes an hour. The patterns last.</p>
+      <p><strong>The thesis:</strong> The same Anthropic SDK runs on three cloud platforms with almost no code change. The interesting work happens on top: tool loops, MCP servers, stateful agents. Learning the platforms takes an hour. The patterns last.</p>
     </div>
     <div class="legend" style="margin-top: var(--space-lg);">
       <div class="legend-item"><span class="legend-dot" aria-hidden="true"></span>01 · Messages API</div>
@@ -43,7 +43,7 @@
   <!-- ── setup ─────────────────────────────────────────────── -->
   <section class="setup reveal" id="setup">
     <p class="setup-title">Setup</p>
-    <p class="setup-body">Clone the repo, install dependencies, configure credentials. One key is enough to start.</p>
+    <p class="setup-body">Clone the repo, install dependencies, point it at the mock server. No cloud account, no keys of your own.</p>
 
     <div class="code-card">
       <div class="code-bar">
@@ -57,18 +57,10 @@ pip install -r requirements.txt
 cp .env.example .env</span></pre>
     </div>
 
-    <p class="setup-body" style="margin-top: var(--space-md);">Open <code class="ic">.env</code> and add your Anthropic API key on the first line. That's enough to run Acts 1 and 3. Cloud platform credentials are optional. Add them when you reach Act 2.</p>
-
-    <div class="code-card">
-      <div class="code-bar">
-        <span class="code-bar-label"><span class="hi">.env</span> · minimum</span>
-        <button class="code-copy" onclick="copyCell(this)">copy</button>
-      </div>
-      <pre><span class="key">ANTHROPIC_API_KEY</span>=sk-ant-...   <span class="cmt"># console.anthropic.com</span></pre>
-    </div>
+    <p class="setup-body" style="margin-top: var(--space-md);">Don't add your own keys. <code class="ic">.env.example</code> already points every SDK at the mock server, so start it and all six labs run offline. Comment that block out later if you want to hit the real platforms.</p>
 
     <div class="note-card" style="margin-top: var(--space-md);">
-      <strong>No credentials at all?</strong> Start the mock server and every lab in this workshop runs offline: no cloud account, no API key, no network. It impersonates Bedrock, Vertex, Foundry and the direct API on one local port: real HTTP, real streaming, real tool loops, canned responses. Nothing in the lab scripts changes.
+      <strong>What the mock is.</strong> It impersonates Bedrock, Vertex, Foundry and the direct API on one local port: real HTTP, real streaming, real tool loops, canned responses. <strong>Got real credentials?</strong> Comment out the mock block at the top of <code class="ic">.env</code> and fill in the platform section below it. Nothing in the lab scripts changes either way.
     </div>
 
     <div class="code-card">
@@ -81,7 +73,7 @@ cp .env.example .env</span></pre>
 
     <div class="code-card">
       <div class="code-bar">
-        <span class="code-bar-label"><span class="hi">.env</span> · offline mode</span>
+        <span class="code-bar-label"><span class="hi">.env</span> · already set for you</span>
         <button class="code-copy" onclick="copyCell(this)">copy</button>
       </div>
       <pre><span class="cmt"># point the SDKs at the mock. Comment these out to go back to real platforms</span>
@@ -422,7 +414,7 @@ response = client.messages.create(model=..., messages=[...])</pre>
         </details>
 
         <div class="note-card">
-          <strong>One subtlety, and Lab 03 doesn't handle it.</strong> The loop above branches on <code class="ic">stop_reason == "tool_use"</code>, which is the clearest way to read the pattern and is what <code class="ic">labs/03_tool_use/bedrock.py</code> does. It breaks when a response hits the token ceiling mid-turn: <code class="ic">stop_reason</code> comes back <code class="ic">max_tokens</code> while <code class="ic">response.content</code> still holds complete <code class="ic">tool_use</code> blocks, and those calls get silently dropped. The production form checks <code class="ic">response.content</code> for tool_use blocks first and uses <code class="ic">stop_reason</code> only as the exit condition. You'll see it in Lab 06. Compare the two loops side by side.
+          <strong>One subtlety, and Lab 03 doesn't handle it.</strong> The loop above branches on <code class="ic">stop_reason == "tool_use"</code>, which reads most clearly and matches <code class="ic">labs/03_tool_use/bedrock.py</code>. It breaks when a response hits the token ceiling mid-turn: <code class="ic">stop_reason</code> comes back <code class="ic">max_tokens</code> while <code class="ic">response.content</code> still holds complete <code class="ic">tool_use</code> blocks, and those calls get dropped with no error. The production form checks <code class="ic">response.content</code> for tool_use blocks first and uses <code class="ic">stop_reason</code> only as the exit condition. You'll see it in Lab 06. Compare the two loops side by side.
         </div>
       </div>
     </div>

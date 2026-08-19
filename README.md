@@ -32,14 +32,14 @@ cp .env.example .env
 
 ### Credentials
 
-**No cloud access at all?** Start the mock server and every lab runs offline:
+**`.env.example` points at the mock server out of the box, so don't add your own keys yet.** Start the mock and every lab runs offline:
 
 ```bash
 python mock_cloud/server.py          # terminal 1
 python labs/01_basic_inference/bedrock.py   # terminal 2
 ```
 
-It impersonates all four endpoints: real HTTP, real streaming, real tool loops, canned responses. Uncomment four base URLs in `.env` and the lab scripts are unchanged. See [mock_cloud/](mock_cloud/). Good for workshops where attendees are still waiting on Model Access approvals.
+It impersonates all four endpoints: real HTTP, real streaming, real tool loops, canned responses. Comment the mock block out of `.env` to go back to real platforms; the lab scripts are unchanged either way. See [mock_cloud/](mock_cloud/). Good for workshops where attendees are still waiting on Model Access approvals.
 
 **Fastest path with a real model, one key.** Set `ANTHROPIC_API_KEY` in `.env` (get one at [console.anthropic.com](https://console.anthropic.com)). Labs 04-06 run immediately with only this.
 
