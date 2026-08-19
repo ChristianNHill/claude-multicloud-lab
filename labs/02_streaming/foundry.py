@@ -1,5 +1,5 @@
 """
-Lab 02 — Streaming: Azure AI Foundry
+Lab 02: Streaming: Azure AI Foundry
 
 The azure-ai-inference SDK uses an iterator-based streaming pattern.
 Each chunk carries a delta (partial text) rather than the full accumulated response.

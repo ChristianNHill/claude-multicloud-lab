@@ -1,10 +1,10 @@
 """
-Lab 03 — Tool Use: AWS Bedrock
+Lab 03: Tool Use: AWS Bedrock
 
 Demonstrates an agentic loop: Claude decides when to call a tool, we execute it,
 and feed the result back. The loop runs until Claude stops requesting tools.
 
-Tool: get_weather (mocked — swap for a real API in production)
+Tool: get_weather (mocked, swap for a real API in production)
 """
 
 import os
@@ -70,7 +70,7 @@ def run():
         messages.append({"role": "assistant", "content": response.content})
 
         if response.stop_reason == "end_turn":
-            # Model is done — extract and print final text
+            # Model is done, extract and print final text
             for block in response.content:
                 if block.type == "text":
                     print(block.text)

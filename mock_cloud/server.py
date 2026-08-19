@@ -1,5 +1,5 @@
 """
-Mock Cloud — fake Bedrock, Vertex, Foundry, and Direct API endpoints
+Mock Cloud: fake Bedrock, Vertex, Foundry, and Direct API endpoints
 
 Runs every lab in this repo offline, with no cloud account and no credentials.
 The lab scripts are not modified: the Anthropic and Azure SDKs each read their
@@ -17,7 +17,7 @@ Then in .env:
   AZURE_FOUNDRY_ENDPOINT=http://127.0.0.1:8787/foundry
 
 Credentials still have to be *present* for the SDKs to construct a client, but
-they are never checked — see mock_cloud/README.md for the dummy values.
+they are never checked. See mock_cloud/README.md for the dummy values.
 
 What this is: real HTTP, real SSE, real AWS event-stream framing, real tool_use
 blocks, real multi-turn agentic loops. Everything except a real model.
@@ -55,7 +55,7 @@ CANNED = {
     ),
     "attention": (
         "Attention lets every token in a sequence look at every other token and decide which "
-        "ones matter for interpreting it. Each token is projected into three vectors — a query, "
+        "ones matter for interpreting it. Each token is projected into three vectors: a query, "
         "a key, and a value. The query of one token is compared against the keys of all tokens "
         "to produce a set of scores, those scores are normalised with a softmax into weights, "
         "and the output for that position is the weighted sum of the value vectors. Multi-head "
@@ -67,8 +67,8 @@ CANNED = {
     "multiple cloud": (
         "Enterprises deploy AI across several clouds to avoid concentrating negotiating leverage "
         "and operational risk in one vendor. Different platforms also lead on different things at "
-        "different times — region availability, compliance certifications, committed-spend pricing "
-        "— and a portable integration layer lets a team take whichever is currently best. The cost "
+        "different times: region availability, compliance certifications, committed-spend pricing, "
+        "and a portable integration layer lets a team take whichever is currently best. The cost "
         "is that every platform has its own SDK, quotas, and failure modes to learn."
     ),
     "chain-of-thought": (
@@ -80,7 +80,7 @@ CANNED = {
 
 GENERIC = (
     "This is a canned response from the mock cloud server. No model was involved, so the text "
-    "does not actually address the prompt — it exists so the lab's request path, streaming, "
+    "does not actually address the prompt. It exists so the lab's request path, streaming, "
     "token accounting, and tool loop can be exercised offline."
 )
 
@@ -165,7 +165,7 @@ def decide_tool_calls(messages: list[dict], tool_names: set[str]) -> list[dict]:
                         "plan-execute-synthesize loop can run without a model."
                     ),
                 })]
-        return []  # every step has a finding — synthesize
+        return []  # every step has a finding, synthesize
 
     # --- Labs 03 and 05: capability tools, all called on the first turn. ---
     if used:
@@ -193,14 +193,14 @@ def final_text(messages: list[dict], tool_names: set[str]) -> str:
         lines = "\n".join(f"- {f['input'].get('step')}" for f in findings)
         return (
             f"Research complete. {len(findings)} findings recorded across the plan:\n\n{lines}\n\n"
-            "This report is canned output from the mock cloud server — the structure is real, "
+            "This report is canned output from the mock cloud server, the structure is real, "
             "the content is not."
         )
     if used:
         names = ", ".join(sorted({u["name"] for u in used}))
         return (
             f"Based on the results from {names}: this is a canned synthesis from the mock cloud "
-            "server. The tool loop ran for real — the model did not."
+            "server. The tool loop ran for real. The model did not."
         )
     return canned_text(first_user_text(messages))
 
@@ -564,7 +564,7 @@ def main():
             PLATFORM_DELAY[k] = 0.0
 
     print(f"[mock] serving Bedrock, Vertex, Foundry and Direct API on http://127.0.0.1:{args.port}")
-    print("[mock] responses are canned — no model is involved")
+    print("[mock] responses are canned: no model is involved")
     ThreadingHTTPServer(("127.0.0.1", args.port), Handler).serve_forever()
 
 

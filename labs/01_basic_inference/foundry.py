@@ -1,8 +1,8 @@
 """
-Lab 01 — Basic Inference: Azure AI Foundry
+Lab 01: Basic Inference: Azure AI Foundry
 
 Uses the azure-ai-inference SDK, which provides a unified interface to any
-model deployed in an Azure AI Foundry project — including Claude via the
+model deployed in an Azure AI Foundry project, including Claude via the
 Azure Marketplace.
 
 Auth: API key via AZURE_FOUNDRY_API_KEY (or swap AzureKeyCredential for

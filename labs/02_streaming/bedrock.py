@@ -1,5 +1,5 @@
 """
-Lab 02 — Streaming: AWS Bedrock
+Lab 02: Streaming: AWS Bedrock
 
 Streams tokens as they're generated instead of waiting for the full response.
 The Anthropic SDK handles the underlying Bedrock InvokeModelWithResponseStream

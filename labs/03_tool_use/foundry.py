@@ -1,5 +1,5 @@
 """
-Lab 03 — Tool Use: Azure AI Foundry
+Lab 03: Tool Use: Azure AI Foundry
 
 Azure AI Foundry uses an OpenAI-compatible tool calling format (ChatCompletionsToolDefinition).
 The agentic loop is the same concept but the SDK types differ from the Anthropic SDK.

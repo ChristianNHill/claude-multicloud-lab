@@ -1,5 +1,5 @@
 """
-Lab 01 — Basic Inference: AWS Bedrock
+Lab 01: Basic Inference: AWS Bedrock
 
 Uses the Anthropic SDK's first-party Bedrock backend (AnthropicBedrock).
 Credentials come from your AWS profile; no extra auth code needed.
