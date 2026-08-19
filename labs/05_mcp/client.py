@@ -1,11 +1,11 @@
 """
-Lab 05 — MCP Client
+Lab 05: MCP Client
 
 Connects Claude to the MCP server in server.py via the MCP protocol.
 The client spawns server.py as a subprocess, discovers its tools at runtime,
 then runs an agentic loop letting Claude call those tools.
 
-Quick start — just needs ANTHROPIC_API_KEY:
+Quick start, just needs ANTHROPIC_API_KEY:
   python labs/05_mcp/client.py
 
 To see the server's log output in a separate terminal:
@@ -36,7 +36,7 @@ QUESTION = (
 
 
 def _make_client():
-    """Return an Anthropic client — direct API if key is set, else Bedrock."""
+    """Return an Anthropic client: direct API if a key is set, else Bedrock."""
     if os.getenv("ANTHROPIC_API_KEY"):
         from anthropic import Anthropic
         return Anthropic(), "claude-haiku-4-5-20251001"
@@ -72,7 +72,7 @@ async def run():
 
             print(f"Discovered {len(anthropic_tools)} tools from MCP server:")
             for t in anthropic_tools:
-                print(f"  • {t['name']} — {t['description']}")
+                print(f"  • {t['name']}: {t['description']}")
             print()
 
             # --- Agentic loop (direct API or Bedrock) ---
@@ -116,7 +116,7 @@ async def run():
 
             except Exception as exc:
                 # _make_client picked its backend off the same env var, so the
-                # hint has to follow it — not always Bedrock.
+                # hint has to follow it, not always Bedrock.
                 hint = "ANTHROPIC_API_KEY" if os.getenv("ANTHROPIC_API_KEY") else "AWS credentials"
                 print(f"\nClaude API error: {exc}")
                 print(f"(Check your {hint} to run the full agentic loop)")

@@ -1,7 +1,7 @@
 """
-Lab 03 — Tool Use: Google Vertex AI
+Lab 03: Tool Use: Google Vertex AI
 
-Identical agentic loop to the Bedrock version — AnthropicVertex uses the same
+Identical agentic loop to the Bedrock version, AnthropicVertex uses the same
 messages API so tool use code is copy-portable across platforms.
 """
 
@@ -43,7 +43,7 @@ def run():
     client = AnthropicVertex(
         project_id=os.environ["VERTEX_PROJECT_ID"],
         region=os.getenv("VERTEX_REGION", "us-east5"),
-        # Unset in normal use — falls through to Application Default Credentials.
+        # Unset in normal use: falls through to Application Default Credentials.
         # Set it to any string to point at the mock server (see mock_cloud/).
         access_token=os.getenv("VERTEX_ACCESS_TOKEN"),
     )

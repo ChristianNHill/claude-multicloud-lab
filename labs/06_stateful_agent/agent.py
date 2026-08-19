@@ -1,9 +1,9 @@
 """
-Lab 06 — Stateful Research Agent
+Lab 06: Stateful Research Agent
 
 Demonstrates multi-step agent orchestration: the agent plans its own work,
 executes each step by recording findings, and synthesizes a final report.
-State lives outside the model — the model reads and writes it through tools.
+State lives outside the model. The model reads and writes it through tools.
 
 This pattern scales to production agents (memory, task queues, checkpointing)
 without requiring an external framework.
@@ -38,7 +38,7 @@ def new_state(topic: str) -> dict:
         "topic": topic,
         "plan": [],        # list of step strings set by make_plan
         "findings": {},    # step -> finding text
-        "complete": False, # unused here on purpose — the mark_complete() exercise sets it
+        "complete": False, # unused here on purpose, the mark_complete() exercise sets it
     }
 
 
@@ -77,7 +77,7 @@ TOOLS = [
                 },
                 "content": {
                     "type": "string",
-                    "description": "The finding — what you know about this step.",
+                    "description": "The finding: what you know about this step.",
                 },
             },
             "required": ["step", "content"],
@@ -161,7 +161,7 @@ def run(topic: str):
 
             messages.append({"role": "assistant", "content": response.content})
 
-            # Collect tool calls from content regardless of stop_reason —
+            # Collect tool calls from content regardless of stop_reason:
             # models can return tool_use blocks even when stop_reason is max_tokens.
             tool_use_blocks = [b for b in response.content if b.type == "tool_use"]
 
@@ -186,11 +186,11 @@ def run(topic: str):
                 break
 
         if iteration >= max_iterations:
-            console.print("[red]Max iterations reached — agent did not complete.[/red]")
+            console.print("[red]Max iterations reached, agent did not complete.[/red]")
 
     except Exception as exc:
         # _make_client picked its backend off the same env var, so the hint
-        # has to follow it — not always Bedrock.
+        # has to follow it, not always Bedrock.
         hint = "ANTHROPIC_API_KEY" if os.getenv("ANTHROPIC_API_KEY") else "AWS credentials"
         console.print(f"\n[red]Error:[/red] {exc}")
         console.print(f"[dim](Check your {hint} to run the full agent loop)[/dim]")

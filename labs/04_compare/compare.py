@@ -1,10 +1,10 @@
 """
-Lab 04 — Cross-Platform Comparison
+Lab 04: Cross-Platform Comparison
 
 Fires the same prompt at all configured platforms concurrently and prints a
 side-by-side table of latency, token usage, and response excerpts.
 
-Quick start: set ANTHROPIC_API_KEY in .env — that's enough to run the Direct
+Quick start: set ANTHROPIC_API_KEY in .env. That's enough to run the Direct
 API row. Add cloud credentials to light up Bedrock, Vertex, and Foundry rows.
 
 Usage:
@@ -78,7 +78,7 @@ def call_vertex(prompt: str) -> dict:
     client = AnthropicVertex(
         project_id=os.environ["VERTEX_PROJECT_ID"],
         region=os.getenv("VERTEX_REGION", "us-east5"),
-        # Unset in normal use — falls through to Application Default Credentials.
+        # Unset in normal use: falls through to Application Default Credentials.
         # Set it to any string to point at the mock server (see mock_cloud/).
         access_token=os.getenv("VERTEX_ACCESS_TOKEN"),
     )
@@ -130,7 +130,7 @@ def call_foundry(prompt: str) -> dict:
 #  Concurrency + display                                                        #
 # --------------------------------------------------------------------------- #
 
-# Keys must match the "platform" each caller returns — a configured row is labelled
+# Keys must match the "platform" each caller returns: a configured row is labelled
 # from the caller, a skipped row from the key, and they should not disagree.
 PLATFORMS = {
     "Direct API":       (call_direct,  ["ANTHROPIC_API_KEY"]),

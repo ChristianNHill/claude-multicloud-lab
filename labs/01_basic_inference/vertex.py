@@ -1,5 +1,5 @@
 """
-Lab 01 — Basic Inference: Google Vertex AI
+Lab 01: Basic Inference: Google Vertex AI
 
 Uses the Anthropic SDK's first-party Vertex backend (AnthropicVertex).
 Auth uses Application Default Credentials (ADC): run `gcloud auth application-default login` once.
@@ -17,12 +17,12 @@ def run():
     client = AnthropicVertex(
         project_id=os.environ["VERTEX_PROJECT_ID"],
         region=os.getenv("VERTEX_REGION", "us-east5"),
-        # Unset in normal use — falls through to Application Default Credentials.
+        # Unset in normal use: falls through to Application Default Credentials.
         # Set it to any string to point at the mock server (see mock_cloud/).
         access_token=os.getenv("VERTEX_ACCESS_TOKEN"),
     )
 
-    # Vertex takes the bare Anthropic model ID — no vendor prefix, no version suffix
+    # Vertex takes the bare Anthropic model ID: no vendor prefix, no version suffix
     response = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=256,

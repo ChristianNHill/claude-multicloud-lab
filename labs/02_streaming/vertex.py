@@ -1,7 +1,7 @@
 """
-Lab 02 — Streaming: Google Vertex AI
+Lab 02: Streaming: Google Vertex AI
 
-Identical stream interface to the direct Anthropic API — the SDK abstracts
+Identical stream interface to the direct Anthropic API. The SDK abstracts
 Vertex's underlying SSE format.
 """
 
@@ -17,7 +17,7 @@ def run():
     client = AnthropicVertex(
         project_id=os.environ["VERTEX_PROJECT_ID"],
         region=os.getenv("VERTEX_REGION", "us-east5"),
-        # Unset in normal use — falls through to Application Default Credentials.
+        # Unset in normal use: falls through to Application Default Credentials.
         # Set it to any string to point at the mock server (see mock_cloud/).
         access_token=os.getenv("VERTEX_ACCESS_TOKEN"),
     )

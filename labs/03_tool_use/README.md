@@ -1,6 +1,6 @@
-# Lab 03 — Tool Use
+# Lab 03: tool use
 
-**What you'll learn:** How to implement an agentic loop — letting the model decide when to call tools, executing those tools on your side, and feeding results back — across all three platforms.
+**What you'll learn:** How to implement an agentic loop, letting the model decide when to call tools, executing those tools on your side, and feeding results back, across all three platforms.
 
 This is the lab that changes how you think about the API. In Labs 01 and 02 the response was text to display. Here it's a decision to act on: the model asks for a function call, your code runs it, and the conversation continues. Everything people call "an agent" is this loop with more tools and better state.
 
@@ -35,7 +35,7 @@ The model never executes anything. It emits a structured request; your code deci
 
 ## Walkthrough
 
-Open `bedrock.py` alongside this — it's the clearest of the three.
+Open `bedrock.py` alongside this, it's the clearest of the three.
 
 ### Step 1: Describe the tool to the model
 
@@ -57,7 +57,7 @@ TOOLS = [
 
 `input_schema` is plain JSON Schema, and the SDK validates the model's output against it before handing it to you.
 
-Treat `description` as a prompt, because that's what it is — it's the only thing the model knows about your function. "Get the current weather for a city. Returns temperature in Celsius" tells it both when to reach for the tool and what shape comes back. A description like `"weather tool"` produces a model that calls it at the wrong times. Same for the per-property descriptions: `"City name, e.g. 'San Francisco'"` is what stops the model passing `"SF"` or `"San Francisco, CA, USA"`.
+Treat `description` as a prompt, because that's what it is, it's the only thing the model knows about your function. "Get the current weather for a city. Returns temperature in Celsius" tells it both when to reach for the tool and what shape comes back. A description like `"weather tool"` produces a model that calls it at the wrong times. Same for the per-property descriptions: `"City name, e.g. 'San Francisco'"` is what stops the model passing `"SF"` or `"San Francisco, CA, USA"`.
 
 ### Step 2: Implement the tool on your side
 
@@ -74,7 +74,7 @@ def dispatch_tool(name: str, inputs: dict) -> str:
     raise ValueError(f"Unknown tool: {name}")
 ```
 
-`dispatch_tool` is the name-to-function lookup, kept separate from the implementation so the loop below never grows an `if` chain. It raises on unknown names rather than returning an error string — the model can only request names you gave it, so an unknown name is a bug in your code, not model behavior to handle gracefully.
+`dispatch_tool` is the name-to-function lookup, kept separate from the implementation so the loop below never grows an `if` chain. It raises on unknown names rather than returning an error string. The model can only request names you gave it, so an unknown name is a bug in your code, not model behavior to handle gracefully.
 
 Results go back as a string. JSON is the convention because it's unambiguous to parse and the model reads it reliably.
 
@@ -92,7 +92,7 @@ while True:
     messages.append({"role": "assistant", "content": response.content})
 ```
 
-`response.content` — the raw block list from Lab 01 — goes straight back into `messages` untouched. Don't reconstruct it or extract just the text: the tool_use blocks carry IDs that the next turn's results must reference, and a rebuilt message loses them.
+`response.content`: the raw block list from Lab 01, goes straight back into `messages` untouched. Don't reconstruct it or extract only the text: the tool_use blocks carry IDs that the next turn's results must reference, and a rebuilt message loses them.
 
 `tools=TOOLS` is passed on *every* iteration. The API is stateless, so the tool list is part of the request, not a session setting.
 
@@ -106,7 +106,7 @@ if response.stop_reason == "end_turn":
     break
 ```
 
-`end_turn` means the model is done and the content is the final answer. This is the loop's only exit — which is why exercise 4 below matters.
+`end_turn` means the model is done and the content is the final answer. This is the loop's only exit, which is why exercise 4 below matters.
 
 ### Step 5: Execute the tools and feed results back
 
@@ -147,12 +147,12 @@ Two of these bite in practice. Foundry hands you arguments as a **JSON string**,
 
 ## Exercises
 
-1. Add a second tool — for example `get_time(city)` — and ask a question that requires both.
+1. Add a second tool, for example `get_time(city)`, and ask a question that requires both.
 2. Add `tool_choice={"type": "any"}` to force Claude to always use a tool on the first turn.
 3. Replace `get_weather` with a real HTTP call to `wttr.in` (no API key needed): `requests.get(f"https://wttr.in/{city}?format=j1").json()`
-4. Add a max-iterations guard to the while loop to prevent runaway agents. `while True` with a single exit condition is fine for a lab and not fine in production — Lab 06 shows the guarded version.
-5. Ask about a city that isn't in `mock_data` and watch how the model handles the `"Unknown"` condition. Tool errors are just strings the model reads.
+4. Add a max-iterations guard to the while loop to prevent runaway agents. `while True` with a single exit condition is fine for a lab and not fine in production, Lab 06 shows the guarded version.
+5. Ask about a city that isn't in `mock_data` and watch how the model handles the `"Unknown"` condition. Tool errors are strings the model reads.
 
 ## Next
 
-[Lab 04 — Cross-Platform Comparison](../04_compare/) runs all three platforms concurrently and puts the latency and token numbers side by side.
+[Lab 04: cross-platform comparison](../04_compare/) runs all three platforms concurrently and puts the latency and token numbers side by side.

@@ -1,5 +1,5 @@
 """
-Lab 05 — MCP Server
+Lab 05: MCP Server
 
 A minimal MCP (Model Context Protocol) server that exposes two tools to any
 MCP-compatible client. Run this first in its own terminal.
@@ -12,8 +12,8 @@ spawns this server as a subprocess and communicates over stdin/stdout.
 The server's stderr log lines are visible in this terminal as calls arrive.
 
 Tools exposed:
-  search_docs(query)           — Keyword search over a small mocked doc store
-  run_calculation(expression)  — Evaluates a safe arithmetic expression
+  search_docs(query): Keyword search over a small mocked doc store
+  run_calculation(expression): Evaluates a safe arithmetic expression
 """
 
 import ast
@@ -41,7 +41,7 @@ DOCS = [
     {"id": "7", "title": "Streaming",                   "body": "Streaming returns tokens as they're generated instead of waiting for the full response, reducing time-to-first-token."},
 ]
 
-# Safe arithmetic evaluator — no eval() or exec()
+# Safe arithmetic evaluator: no eval() or exec()
 _SAFE_OPS = {
     ast.Add: operator.add,
     ast.Sub: operator.sub,

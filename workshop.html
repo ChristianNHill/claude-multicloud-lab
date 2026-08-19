@@ -4,577 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Claude on Three Clouds</title>
-<style>
-/* Hallmark · macrostructure: Narrative Workflow · genre: modern-minimal · theme: Cobalt
- * tone: direct · technical · instructional · anchor hue: cobalt 256°
- * nav: N6 Masthead · footer: none (workshop doc)
- * pre-emit critique: P5 H5 E5 S5 R5 V5
- */
-
-/* ── tokens ─────────────────────────────────────────────── */
-:root {
-  --color-paper:       oklch(98.5% 0.004 250);
-  --color-paper-2:     oklch(95.5% 0.007 252);
-  --color-ink:         oklch(24%   0.020 258);
-  --color-ink-2:       oklch(40%   0.018 256);
-  --color-muted:       oklch(46%   0.014 254);
-  --color-rule:        oklch(89%   0.008 252);
-  --color-rule-2:      oklch(80%   0.012 254);
-  --color-accent:      oklch(55%   0.200 256);
-  --color-accent-soft: oklch(96%   0.025 256);
-  --color-accent-ink:  oklch(99%   0.003 250);
-  --color-focus:       oklch(55%   0.200 256);
-  --color-graphite:    oklch(18%   0.016 260);
-  --color-graphite-2:  oklch(26%   0.018 258);
-  --color-graphite-3:  oklch(36%   0.016 257);
-  --color-tok-key:     oklch(70%   0.140 256);
-  --color-tok-str:     oklch(72%   0.120 155);
-  --color-tok-dim:     oklch(60%   0.014 258);
-  --color-ok:          oklch(58%   0.150 145);
-  --color-warn:        oklch(64%   0.160 78);
-  --color-err:         oklch(58%   0.180 25);
-
-  --font-display: "SF Pro Display", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  --font-body:    "SF Pro Text",    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono:    ui-monospace, "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
-
-  --space-3xs: 0.25rem;  --space-2xs: 0.375rem; --space-xs: 0.625rem;
-  --space-sm:  0.875rem; --space-md:  1.25rem;  --space-lg: 2rem;
-  --space-xl:  3.25rem;  --space-2xl: 5rem;     --space-3xl: 8rem;
-
-  --text-xs:  0.6875rem; --text-sm:  0.8125rem; --text-md:  1rem;
-  --text-lg:  1.125rem;  --text-xl:  1.375rem;  --text-2xl: 1.875rem;
-  --text-3xl: 2.5rem;
-
-  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
-  --dur-short:  180ms;  --dur-med: 320ms;  --dur-long: 600ms;
-
-  --radius-sm: 4px;  --radius-md: 6px;  --radius-lg: 10px;
-  --max-w: 740px;    --nav-h: 52px;
-
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-paper:       oklch(17%   0.016 260);
-    --color-paper-2:     oklch(22%   0.018 258);
-    --color-ink:         oklch(93%   0.006 250);
-    --color-ink-2:       oklch(78%   0.008 252);
-    --color-muted:       oklch(64%   0.012 254);
-    --color-rule:        oklch(28%   0.018 258);
-    --color-rule-2:      oklch(36%   0.016 257);
-    --color-accent:      oklch(65%   0.180 256);
-    --color-accent-soft: oklch(24%   0.040 256);
-    --color-accent-ink:  oklch(10%   0.016 260);
-    --color-graphite:    oklch(12%   0.014 262);
-    --color-graphite-2:  oklch(20%   0.018 260);
-    --color-graphite-3:  oklch(30%   0.016 258);
-    --color-tok-key:     oklch(72%   0.160 256);
-    --color-tok-str:     oklch(74%   0.140 155);
-    --color-tok-dim:     oklch(58%   0.014 258);
-    --color-ok:          oklch(65%   0.150 145);
-    --color-warn:        oklch(70%   0.160 78);
-    --color-err:         oklch(64%   0.180 25);
-  }
-}
-:root[data-theme="dark"] {
-  --color-paper:       oklch(17%   0.016 260);
-  --color-paper-2:     oklch(22%   0.018 258);
-  --color-ink:         oklch(93%   0.006 250);
-  --color-ink-2:       oklch(78%   0.008 252);
-  --color-muted:       oklch(64%   0.012 254);
-  --color-rule:        oklch(28%   0.018 258);
-  --color-rule-2:      oklch(36%   0.016 257);
-  --color-accent:      oklch(65%   0.180 256);
-  --color-accent-soft: oklch(24%   0.040 256);
-  --color-accent-ink:  oklch(10%   0.016 260);
-  --color-graphite:    oklch(12%   0.014 262);
-  --color-graphite-2:  oklch(20%   0.018 260);
-  --color-graphite-3:  oklch(30%   0.016 258);
-  --color-tok-key:     oklch(72%   0.160 256);
-  --color-tok-str:     oklch(74%   0.140 155);
-  --color-tok-dim:     oklch(58%   0.014 258);
-  --color-ok:          oklch(65%   0.150 145);
-  --color-warn:        oklch(70%   0.160 78);
-  --color-err:         oklch(64%   0.180 25);
-}
-
-/* ── reset ──────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { overflow-x: clip; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--color-paper);
-  color: var(--color-ink-2);
-  font-family: var(--font-body);
-  font-size: var(--text-md);
-  line-height: 1.65;
-  -webkit-font-smoothing: antialiased;
-}
-a { color: var(--color-accent); text-underline-offset: 3px; }
-a:hover { opacity: 0.8; }
-*:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
-  border-radius: var(--radius-sm);
-}
-
-/* ── nav ─────────────────────────────────────────────────── */
-.nav {
-  position: sticky; top: 0; z-index: 50; height: var(--nav-h);
-  background: color-mix(in oklab, var(--color-paper) 92%, transparent);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--color-rule);
-  display: flex; align-items: center; gap: var(--space-md);
-  padding: 0 var(--space-lg);
-}
-.nav-brand {
-  font-family: var(--font-display);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-ink);
-  letter-spacing: -0.01em;
-  text-decoration: none;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.nav-brand .tick {
-  display: inline-block;
-  width: 6px; height: 6px;
-  background: var(--color-accent);
-  border-radius: 50%;
-  margin-right: 6px;
-  vertical-align: middle;
-  margin-bottom: 1px;
-}
-.nav-acts {
-  display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; flex: 1;
-}
-.nav-acts::-webkit-scrollbar { display: none; }
-.nav-acts a {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: var(--color-muted);
-  text-decoration: none;
-  padding: var(--space-3xs) var(--space-xs);
-  white-space: nowrap;
-  border-radius: var(--radius-sm);
-}
-.nav-acts a:hover { color: var(--color-accent); }
-.nav-reveal {
-  margin-left: auto;
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  border: 1px solid var(--color-rule-2);
-  background: transparent;
-  color: var(--color-ink-2);
-  padding: 5px 12px;
-  border-radius: var(--radius-md);
-  white-space: nowrap;
-}
-.nav-reveal:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
-/* ── page layout ─────────────────────────────────────────── */
-.page { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--space-lg) var(--space-3xl); }
-
-/* ── hero / thesis ───────────────────────────────────────── */
-.hero {
-  padding: var(--space-2xl) 0 var(--space-xl);
-  border-bottom: 1px solid var(--color-rule);
-}
-.hero-title {
-  font-family: var(--font-display);
-  font-size: clamp(2.25rem, 6vw, 3.5rem);
-  font-weight: 600;
-  font-style: normal;
-  color: var(--color-ink);
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  text-wrap: balance;
-}
-.hero-sub {
-  margin-top: var(--space-sm);
-  font-size: var(--text-lg);
-  color: var(--color-ink-2);
-  max-width: 560px;
-  line-height: 1.55;
-}
-.thesis {
-  margin-top: var(--space-lg);
-  padding: var(--space-md) var(--space-lg);
-  border-left: 2px solid var(--color-accent);
-  background: var(--color-accent-soft);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-}
-.thesis p { font-size: var(--text-md); line-height: 1.7; color: var(--color-ink-2); }
-.thesis strong { color: var(--color-ink); }
-
-/* ── act structure ───────────────────────────────────────── */
-.act { padding: var(--space-2xl) 0 0; }
-
-.act-marker {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-sm);
-  align-items: center;
-  margin-bottom: var(--space-lg);
-}
-.act-num {
-  font-family: var(--font-mono);
-  font-size: var(--text-3xl);
-  font-weight: 600;
-  color: var(--color-accent);
-  letter-spacing: -0.04em;
-  line-height: 1;
-  min-width: 3.5rem;
-}
-.bonus .act-num { color: var(--color-muted); }
-.act-rule {
-  height: 1px;
-  background: var(--color-rule-2);
-  position: relative;
-}
-.act-rule::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0;
-  height: 2px;
-  width: 40px;
-  background: var(--color-accent);
-  margin-top: -0.5px;
-}
-.bonus .act-rule::before { background: var(--color-muted); }
-
-.act-head { margin-bottom: var(--space-lg); }
-.act-title {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  font-weight: 600;
-  font-style: normal;
-  color: var(--color-ink);
-  letter-spacing: -0.025em;
-  line-height: 1.2;
-}
-.act-goal {
-  margin-top: var(--space-xs);
-  font-size: var(--text-md);
-  color: var(--color-muted);
-}
-.act-body {
-  font-size: var(--text-md);
-  color: var(--color-ink-2);
-  line-height: 1.7;
-  margin-bottom: var(--space-lg);
-}
-.act-body p + p { margin-top: var(--space-sm); }
-
-/* ── steps ───────────────────────────────────────────────── */
-.step {
-  display: grid;
-  grid-template-columns: 3.5rem 1fr;
-  gap: var(--space-sm);
-  padding: var(--space-lg) 0;
-  border-top: 1px solid var(--color-rule);
-}
-.step-num {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: var(--color-accent);
-  padding-top: 3px;
-}
-.step-body { min-width: 0; }
-.step-title {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 600;
-  font-style: normal;
-  color: var(--color-ink);
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-xs);
-}
-.step-dir {
-  font-size: var(--text-md);
-  color: var(--color-ink-2);
-  margin-bottom: var(--space-md);
-  line-height: 1.7;
-}
-.step-dir em { color: var(--color-muted); font-style: normal; }
-
-/* ── code cards (graphite) ────────────────────────────────── */
-.code-card {
-  background: var(--color-graphite);
-  border: 1px solid var(--color-graphite-2);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  margin: var(--space-sm) 0;
-}
-.code-card + .code-card { margin-top: var(--space-xs); }
-.code-bar {
-  display: flex; align-items: center; gap: var(--space-xs);
-  padding: 7px var(--space-md);
-  border-bottom: 1px solid var(--color-graphite-2);
-  background: var(--color-graphite-2);
-}
-.code-bar-label {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.05em;
-  color: var(--color-tok-dim);
-  flex: 1;
-}
-.code-bar-label .hi { color: var(--color-tok-key); }
-.code-copy {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  cursor: pointer;
-  border: 1px solid var(--color-graphite-3);
-  background: transparent;
-  color: var(--color-tok-dim);
-  padding: 2px 9px;
-  border-radius: var(--radius-sm);
-  letter-spacing: 0.03em;
-}
-.code-copy:hover { color: var(--color-accent); border-color: var(--color-accent); }
-.code-card pre {
-  margin: 0;
-  padding: var(--space-md);
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-  color: oklch(78% 0.008 252);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-x: auto;
-}
-.code-card .cmd  { color: oklch(78% 0.008 252); }
-.code-card .ok   { color: var(--color-ok); }
-.code-card .warn { color: var(--color-warn); }
-.code-card .dim  { color: var(--color-tok-dim); }
-.code-card .err  { color: var(--color-err); }
-.code-card .key  { color: var(--color-tok-key); }
-.code-card .str  { color: var(--color-tok-str); }
-.code-card .cmt  { color: var(--color-tok-dim); font-style: normal; }
-
-/* ── note cards (light) ───────────────────────────────────── */
-.note-card {
-  border: 1px solid var(--color-rule);
-  border-left: 2px solid var(--color-accent);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  background: var(--color-paper-2);
-  padding: var(--space-md) var(--space-lg);
-  margin: var(--space-md) 0;
-  font-size: var(--text-sm);
-  color: var(--color-ink-2);
-  line-height: 1.7;
-}
-.note-card strong { color: var(--color-ink); }
-.note-card code {
-  font-family: var(--font-mono);
-  font-size: 0.8em;
-  background: var(--color-paper);
-  border: 1px solid var(--color-rule);
-  padding: 1px 5px;
-  border-radius: var(--radius-sm);
-  color: var(--color-ink-2);
-}
-.note-card.insight {
-  border-left-color: var(--color-muted);
-}
-.note-label {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: var(--space-3xs);
-  display: block;
-}
-.note-card.insight .note-label { color: var(--color-muted); }
-
-/* ── solution reveals ─────────────────────────────────────── */
-details.solution {
-  border: 1px solid var(--color-rule);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-  margin: var(--space-sm) 0;
-  background: var(--color-paper);
-}
-details.solution > summary {
-  cursor: pointer;
-  list-style: none;
-  padding: var(--space-xs) var(--space-md);
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: var(--color-muted);
-  user-select: none;
-}
-details.solution > summary::-webkit-details-marker { display: none; }
-details.solution > summary::before {
-  content: '▸';
-  font-size: 10px;
-  color: var(--color-accent);
-}
-details.solution[open] > summary::before { content: '▾'; }
-details.solution[open] > summary { color: var(--color-ink-2); }
-details.solution .sol-body { padding: 0 0 var(--space-sm); }
-
-/* ── prose code ───────────────────────────────────────────── */
-code.ic {
-  font-family: var(--font-mono);
-  font-size: 0.86em;
-  background: var(--color-paper-2);
-  border: 1px solid var(--color-rule);
-  padding: 1px 5px;
-  border-radius: var(--radius-sm);
-  color: var(--color-ink-2);
-}
-
-/* ── SDK table ────────────────────────────────────────────── */
-.sdk-table { width: 100%; border-collapse: collapse; margin: var(--space-sm) 0; }
-.sdk-table th {
-  text-align: left;
-  padding: var(--space-xs) var(--space-sm);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  border-bottom: 1px solid var(--color-rule-2);
-  white-space: nowrap;
-}
-.sdk-table td {
-  padding: var(--space-xs) var(--space-sm);
-  border-bottom: 1px solid var(--color-rule);
-  font-size: var(--text-sm);
-  color: var(--color-ink-2);
-  vertical-align: top;
-}
-.sdk-table tr:last-child td { border-bottom: 0; }
-.sdk-table code {
-  font-family: var(--font-mono);
-  font-size: 0.85em;
-  background: var(--color-paper-2);
-  border: 1px solid var(--color-rule);
-  padding: 1px 5px;
-  border-radius: var(--radius-sm);
-}
-
-/* ── debrief section ─────────────────────────────────────── */
-.debrief {
-  padding: var(--space-2xl) 0;
-  border-top: 1px solid var(--color-rule-2);
-  margin-top: var(--space-xl);
-}
-.debrief-title {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: var(--space-lg);
-}
-.debrief-q {
-  margin: var(--space-lg) 0;
-  padding-top: var(--space-lg);
-  border-top: 1px solid var(--color-rule);
-}
-.debrief-q:first-of-type { margin-top: 0; padding-top: 0; border-top: 0; }
-.q-head {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  font-weight: 600;
-  font-style: normal;
-  color: var(--color-ink);
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-sm);
-}
-.q-body { font-size: var(--text-md); color: var(--color-ink-2); line-height: 1.75; }
-.q-body p + p { margin-top: var(--space-sm); }
-
-/* ── setup section ────────────────────────────────────────── */
-.setup {
-  padding: var(--space-xl) 0;
-  border-bottom: 1px solid var(--color-rule);
-}
-.setup-title {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-  margin-bottom: var(--space-md);
-}
-.setup-body { font-size: var(--text-md); color: var(--color-ink-2); margin-bottom: var(--space-md); }
-
-/* ── legend ─────────────────────────────────────────────────── */
-.legend {
-  display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg);
-  margin: var(--space-md) 0;
-}
-.legend-item {
-  display: flex; align-items: center; gap: var(--space-xs);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  letter-spacing: 0.04em;
-  color: var(--color-muted);
-}
-.legend-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--color-accent); flex-shrink: 0;
-}
-.legend-dot.d2 { background: var(--color-ok); }
-.legend-dot.d3 { background: var(--color-warn); }
-.legend-dot.d4 { background: var(--color-muted); }
-
-/* ── reveal animation ────────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(12px);
-  transition:
-    opacity var(--dur-long) var(--ease-out),
-    transform var(--dur-long) var(--ease-out);
-}
-.reveal.is-in { opacity: 1; transform: none; }
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
-}
-
-/* ── responsive ──────────────────────────────────────────── */
-@media (max-width: 640px) {
-  :root { --space-lg: 1.25rem; }
-  .nav { padding: 0 var(--space-md); }
-  .nav-acts { display: none; }
-  .step { grid-template-columns: 2.5rem 1fr; }
-  .act-marker { grid-template-columns: auto 1fr; }
-  .act-num { font-size: var(--text-2xl); min-width: 2.75rem; }
-}
-</style>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="workshop.css">
 </head>
 <body>
 
-<!-- ── N6 Masthead nav ──────────────────────────────────────── -->
+<!-- ── Side rail ──────────────────────────────────────────────── -->
 <nav class="nav" aria-label="Workshop navigation">
   <a class="nav-brand" href="#top"><span class="tick" aria-hidden="true"></span>Claude / Three Clouds</a>
   <div class="nav-acts">
@@ -633,7 +68,7 @@ cp .env.example .env</span></pre>
     </div>
 
     <div class="note-card" style="margin-top: var(--space-md);">
-      <strong>No credentials at all?</strong> Start the mock server and every lab in this workshop runs offline — no cloud account, no API key, no network. It impersonates Bedrock, Vertex, Foundry and the direct API on one local port: real HTTP, real streaming, real tool loops, canned responses. Nothing in the lab scripts changes.
+      <strong>No credentials at all?</strong> Start the mock server and every lab in this workshop runs offline: no cloud account, no API key, no network. It impersonates Bedrock, Vertex, Foundry and the direct API on one local port: real HTTP, real streaming, real tool loops, canned responses. Nothing in the lab scripts changes.
     </div>
 
     <div class="code-card">
@@ -649,13 +84,13 @@ cp .env.example .env</span></pre>
         <span class="code-bar-label"><span class="hi">.env</span> · offline mode</span>
         <button class="code-copy" onclick="copyCell(this)">copy</button>
       </div>
-      <pre><span class="cmt"># point the SDKs at the mock — comment these out to go back to real platforms</span>
+      <pre><span class="cmt"># point the SDKs at the mock. Comment these out to go back to real platforms</span>
 <span class="key">ANTHROPIC_BASE_URL</span>=http://127.0.0.1:8787/direct
 <span class="key">ANTHROPIC_BEDROCK_BASE_URL</span>=http://127.0.0.1:8787/bedrock
 <span class="key">ANTHROPIC_VERTEX_BASE_URL</span>=http://127.0.0.1:8787/vertex/v1
 <span class="key">AZURE_FOUNDRY_ENDPOINT</span>=http://127.0.0.1:8787/foundry
 
-<span class="cmt"># credentials must exist but are never checked — any string works</span>
+<span class="cmt"># credentials must exist but are never checked, so any string works</span>
 <span class="key">ANTHROPIC_API_KEY</span>=mock
 <span class="key">AWS_ACCESS_KEY_ID</span>=mock
 <span class="key">AWS_SECRET_ACCESS_KEY</span>=mock
@@ -675,7 +110,7 @@ cp .env.example .env</span></pre>
 
 
   <!-- ══════════════════════════════════════════════════════
-       ACT 01 — THE MESSAGES API
+       ACT 01, THE MESSAGES API
   ══════════════════════════════════════════════════════ -->
   <section class="act reveal" id="act-01">
     <div class="act-marker">
@@ -747,11 +182,11 @@ general capability base that developers build applications on top of.
                 <span class="code-bar-label">non-streaming vs streaming</span>
                 <button class="code-copy" onclick="copyCell(this)">copy</button>
               </div>
-              <pre><span class="cmt"># non-streaming — waits for full response</span>
+              <pre><span class="cmt"># non-streaming, waits for full response</span>
 <span class="key">response</span> = client.messages.create(...)
 print(response.content[0].text)
 
-<span class="cmt"># streaming — tokens arrive as generated</span>
+<span class="cmt"># streaming: tokens arrive as generated</span>
 with client.messages.stream(...) as <span class="key">stream</span>:
     for text in stream.text_stream:
         print(text, end=<span class="str">""</span>, flush=<span class="key">True</span>)
@@ -795,7 +230,7 @@ final = stream.get_final_message()   <span class="cmt"># usage only available af
 
 
   <!-- ══════════════════════════════════════════════════════
-       ACT 02 — THREE CLOUD PLATFORMS
+       ACT 02, THREE CLOUD PLATFORMS
   ══════════════════════════════════════════════════════ -->
   <section class="act reveal" id="act-02">
     <div class="act-marker">
@@ -815,7 +250,7 @@ final = stream.get_final_message()   <span class="cmt"># usage only available af
       <div class="step-num">2.1</div>
       <div class="step-body">
         <h3 class="step-title">Add cloud credentials</h3>
-        <p class="step-dir">Add whichever cloud credentials you have to <code class="ic">.env</code>. You don't need all three; any one will work. Then open the corresponding lab file and find the constructor — it is the only part that differs from the direct API version.</p>
+        <p class="step-dir">Add whichever cloud credentials you have to <code class="ic">.env</code>. You don't need all three; any one will work. Then open the corresponding lab file and find the constructor. It is the only part that differs from the direct API version.</p>
 
         <details class="solution">
           <summary>SHOW the SDK differences</summary>
@@ -839,7 +274,7 @@ client = AnthropicVertex(project_id=<span class="str">"..."</span>, region=<span
                          access_token=os.getenv(<span class="str">"VERTEX_ACCESS_TOKEN"</span>))
                          <span class="cmt"># unset → Application Default Credentials; set it to reach the mock</span>
 
-<span class="cmt"># After this — identical:</span>
+<span class="cmt"># After this, identical:</span>
 response = client.messages.create(model=..., messages=[...])</pre>
             </div>
           </div>
@@ -921,7 +356,7 @@ response = client.messages.create(model=..., messages=[...])</pre>
 
 
   <!-- ══════════════════════════════════════════════════════
-       ACT 03 — TOOL USE & STATEFUL AGENTS
+       ACT 03, TOOL USE & STATEFUL AGENTS
   ══════════════════════════════════════════════════════ -->
   <section class="act reveal" id="act-03">
     <div class="act-marker">
@@ -973,7 +408,7 @@ response = client.messages.create(model=..., messages=[...])</pre>
     messages.append({<span class="str">"role"</span>: <span class="str">"assistant"</span>, <span class="str">"content"</span>: response.content})
 
     if response.stop_reason == <span class="str">"end_turn"</span>:
-        break           <span class="cmt"># model is done — print text</span>
+        break           <span class="cmt"># model is done. Print text</span>
 
     if response.stop_reason == <span class="str">"tool_use"</span>:
         results = []
@@ -987,7 +422,7 @@ response = client.messages.create(model=..., messages=[...])</pre>
         </details>
 
         <div class="note-card">
-          <strong>One subtlety — and Lab 03 doesn't handle it.</strong> The loop above branches on <code class="ic">stop_reason == "tool_use"</code>, which is the clearest way to read the pattern and is what <code class="ic">labs/03_tool_use/bedrock.py</code> does. It breaks when a response hits the token ceiling mid-turn: <code class="ic">stop_reason</code> comes back <code class="ic">max_tokens</code> while <code class="ic">response.content</code> still holds complete <code class="ic">tool_use</code> blocks, and those calls get silently dropped. The production form checks <code class="ic">response.content</code> for tool_use blocks first and uses <code class="ic">stop_reason</code> only as the exit condition. You'll see it in Lab 06 — compare the two loops side by side.
+          <strong>One subtlety, and Lab 03 doesn't handle it.</strong> The loop above branches on <code class="ic">stop_reason == "tool_use"</code>, which is the clearest way to read the pattern and is what <code class="ic">labs/03_tool_use/bedrock.py</code> does. It breaks when a response hits the token ceiling mid-turn: <code class="ic">stop_reason</code> comes back <code class="ic">max_tokens</code> while <code class="ic">response.content</code> still holds complete <code class="ic">tool_use</code> blocks, and those calls get silently dropped. The production form checks <code class="ic">response.content</code> for tool_use blocks first and uses <code class="ic">stop_reason</code> only as the exit condition. You'll see it in Lab 06. Compare the two loops side by side.
         </div>
       </div>
     </div>
@@ -1090,7 +525,7 @@ response = client.messages.create(model=..., messages=[...])</pre>
 
 
   <!-- ══════════════════════════════════════════════════════
-       BONUS — MCP (dark band)
+       BONUS, MCP (dark band)
   ══════════════════════════════════════════════════════ -->
   <section class="act bonus reveal" id="bonus">
       <div class="act-marker">
@@ -1143,8 +578,8 @@ response = client.messages.create(model=..., messages=[...])</pre>
               <div class="code-card">
                 <div class="code-bar"><span class="code-bar-label">client output (Terminal 2)</span></div>
                 <pre><span class="ok">Discovered 2 tools from MCP server:</span>
-  • search_docs — Search the Claude Platform knowledge base.
-  • run_calculation — Evaluate a safe arithmetic expression.
+  • search_docs: Search the Claude Platform knowledge base.
+  • run_calculation: Evaluate a safe arithmetic expression.
 
 Question: What does the knowledge base say about MCP and tool use?
           Also, what is 17 * 23?
@@ -1154,7 +589,7 @@ Question: What does the knowledge base say about MCP and tool use?
 
 <span class="dim">Claude: MCP (Model Context Protocol) is an open standard that lets LLMs connect
 to external tools through a unified interface. Tool use lets Claude call
-external functions — it returns a tool_use block, your code executes the
+external functions. It returns a tool_use block and your code executes the
 function, and feeds the result back.
 
 17 * 23 = 391</span></pre>
@@ -1256,7 +691,11 @@ def get_doc_by_id(id: str) -> str:
 </div><!-- .page -->
 
 <script>
-  /* reveal on scroll */
+  // The reveal styles only apply once this class is set, so the page stays readable
+// even if the rest of this script never runs.
+document.documentElement.classList.add('js');
+
+/* reveal on scroll */
   const io = new IntersectionObserver(
     entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
     { threshold: 0.06, rootMargin: '0px 0px -40px 0px' }
@@ -1269,13 +708,13 @@ def get_doc_by_id(id: str) -> str:
     const items = document.querySelectorAll('details.solution');
     const anyClosed = [...items].some(d => !d.open);
     items.forEach(d => d.open = anyClosed);
-    btn.textContent = anyClosed ? 'HIDE ALL' : 'REVEAL ALL';
+    btn.textContent = anyClosed ? 'HIDE ALL': 'REVEAL ALL';
   }
 
   /* copy button */
   function copyCell(btn) {
     const pre = btn.closest('.code-card').querySelector('pre');
-    const text = pre ? pre.innerText : '';
+    const text = pre ? pre.innerText: '';
     navigator.clipboard.writeText(text).then(() => {
       const old = btn.textContent;
       btn.textContent = 'copied';

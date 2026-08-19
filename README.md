@@ -1,4 +1,4 @@
-# Claude Multi-Cloud Lab
+# Claude multi-cloud lab
 
 A hands-on lab series for deploying and building with Claude across AWS Bedrock, Google Vertex AI, and Azure AI Foundry. Six progressive labs cover the Claude Platform stack, from first API call to MCP-connected agents.
 
@@ -39,7 +39,7 @@ python mock_cloud/server.py          # terminal 1
 python labs/01_basic_inference/bedrock.py   # terminal 2
 ```
 
-It impersonates all four endpoints — real HTTP, real streaming, real tool loops, canned responses. Uncomment four base URLs in `.env` and the lab scripts are unchanged. See [mock_cloud/](mock_cloud/). Good for workshops where attendees are still waiting on Model Access approvals.
+It impersonates all four endpoints: real HTTP, real streaming, real tool loops, canned responses. Uncomment four base URLs in `.env` and the lab scripts are unchanged. See [mock_cloud/](mock_cloud/). Good for workshops where attendees are still waiting on Model Access approvals.
 
 **Fastest path with a real model, one key.** Set `ANTHROPIC_API_KEY` in `.env` (get one at [console.anthropic.com](https://console.anthropic.com)). Labs 04-06 run immediately with only this.
 
@@ -51,7 +51,7 @@ It impersonates all four endpoints — real HTTP, real streaming, real tool loop
 | Google Vertex AI | `gcloud auth application-default login` + `VERTEX_PROJECT_ID` in `.env` + enable Claude in Model Garden |
 | Azure Foundry | Deploy Claude via Azure Marketplace → set `AZURE_FOUNDRY_ENDPOINT`, `AZURE_FOUNDRY_API_KEY`, `AZURE_FOUNDRY_MODEL` in `.env` |
 
-Labs 01-03 show all three cloud platforms side by side — run the script for whichever platform you've configured, since the others raise a credentials error. Lab 04 is the one that skips unconfigured platforms and keeps going.
+Labs 01-03 show all three cloud platforms side by side, run the script for whichever platform you've configured, since the others raise a credentials error. Lab 04 is the one that skips unconfigured platforms and keeps going.
 
 ---
 
@@ -72,11 +72,11 @@ The labs are ordered by concept depth. Each one builds on the last:
 
 ```
 Messages API (01)
-    └─► Streaming (02)           — same API, streaming variant
-        └─► Tool Use (03)        — agentic loop, multi-turn
-            └─► Compare (04)     — all platforms, concurrent
-                └─► MCP (05)     — tools in a separate process, discovered at runtime
-                    └─► Agent (06) — multi-step planning, external state
+    └─► Streaming (02): same API, streaming variant
+        └─► Tool Use (03): agentic loop, multi-turn
+            └─► Compare (04): all platforms, concurrent
+                └─► MCP (05): tools in a separate process, discovered at runtime
+                    └─► Agent (06): multi-step planning, external state
 ```
 
 Labs 01-04 run on all three platforms. Labs 05-06 focus on Bedrock and demonstrate patterns that apply equally on Vertex and Foundry.
