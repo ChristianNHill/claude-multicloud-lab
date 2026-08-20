@@ -57,7 +57,7 @@ Labs 01-03 show all three cloud platforms side by side, run the script for which
 
 ## The showpiece demo
 
-Run this and watch all three platforms answer the same prompt side by side, with latency and token counts:
+Run this to see all three platforms answer the same prompt side by side, with latency and token counts:
 
 ```bash
 python labs/04_compare/compare.py

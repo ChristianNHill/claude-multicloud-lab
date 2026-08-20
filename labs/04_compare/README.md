@@ -96,7 +96,7 @@ with ThreadPoolExecutor(max_workers=3) as pool:
 
 Threads, not `asyncio`: the SDK calls are blocking HTTP, and a thread pool needs no async plumbing through the rest of the script. For four concurrent network calls that's the right tool.
 
-Submit everything first, collect afterward. Calling `.result()` inside this loop would serialize the whole thing and quietly turn the benchmark into a sequential one: a mistake that produces plausible-looking numbers, which is the worst kind.
+Submit everything first, collect afterward. Calling `.result()` inside this loop would serialize the whole thing and turn the benchmark into a sequential one, without any error to flag it: a mistake that produces plausible-looking numbers, which is the worst kind.
 
 Skipped platforms get a `None` placeholder rather than being dropped, so they still appear as a row in the output. Missing configuration should be visible, not silent.
 
@@ -116,7 +116,7 @@ for key, future in futures.items():
         results.append({"platform": key, "status": f"error: {exc}", "error": True})
 ```
 
-`future.result()` re-raises whatever the thread raised, on this thread. The `try` per platform is what keeps one expired credential from taking down the other three rows, for a comparison tool, partial results beat an exception every time.
+`future.result()` re-raises whatever the thread raised, on this thread. The `try` per platform keeps one expired credential from taking down the other three rows: for a comparison tool, partial results beat an exception every time.
 
 ### Step 5: Render
 

@@ -57,7 +57,7 @@ TOOLS = [
 
 `input_schema` is plain JSON Schema, and the SDK validates the model's output against it before handing it to you.
 
-Treat `description` as a prompt, because that's what it is, it's the only thing the model knows about your function. "Get the current weather for a city. Returns temperature in Celsius" tells it both when to reach for the tool and what shape comes back. A description like `"weather tool"` produces a model that calls it at the wrong times. Same for the per-property descriptions: `"City name, e.g. 'San Francisco'"` is what stops the model passing `"SF"` or `"San Francisco, CA, USA"`.
+Treat `description` as a prompt: it's the only thing the model knows about your function. "Get the current weather for a city. Returns temperature in Celsius" tells it both when to reach for the tool and what shape comes back. A description like `"weather tool"` produces a model that calls it at the wrong times. Same for the per-property descriptions: `"City name, e.g. 'San Francisco'"` is what stops the model passing `"SF"` or `"San Francisco, CA, USA"`.
 
 ### Step 2: Implement the tool on your side
 
@@ -106,7 +106,7 @@ if response.stop_reason == "end_turn":
     break
 ```
 
-`end_turn` means the model is done and the content is the final answer. This is the loop's only exit, which is why exercise 4 below matters.
+`end_turn` means the model has finished and the content holds the final answer. This is the loop's only exit, which is why exercise 4 below matters.
 
 ### Step 5: Execute the tools and feed results back
 

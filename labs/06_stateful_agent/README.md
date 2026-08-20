@@ -124,7 +124,7 @@ Work through this process in order:
 Use get_state at any point to review your progress. Do not skip steps."""
 ```
 
-Tool descriptions say what each tool does; the system prompt says what order to use them in. Both are needed. A numbered procedure with an explicit terminal condition ("write a final synthesis as your text response") is what makes the run finish rather than loop.
+Tool descriptions say what each tool does; the system prompt states the order to use them in. Both are needed. A numbered procedure with an explicit terminal condition ("write a final synthesis as your text response") is what makes the run finish rather than loop.
 
 ### Step 5: Read the content blocks, don't trust stop_reason
 
@@ -139,7 +139,7 @@ elif response.stop_reason == "end_turn":
     ...
 ```
 
-This is the production-hardened version of Lab 03's loop, and the difference is worth understanding. Lab 03 branches on `stop_reason == "tool_use"`. That's correct until a response hits the token ceiling mid-turn: `stop_reason` comes back `max_tokens` while the content still contains complete `tool_use` blocks. Branch on `stop_reason` alone and those calls are silently dropped, leaving the model waiting for results that never arrive.
+This is the production-hardened version of Lab 03's loop, and the difference is worth understanding. Lab 03 branches on `stop_reason == "tool_use"`. That's correct until a response hits the token ceiling mid-turn: `stop_reason` comes back `max_tokens` while the content still contains complete `tool_use` blocks. Branch on `stop_reason` alone and those calls drop with no error, leaving the model waiting for results that never arrive.
 
 Checking the content first and using `stop_reason` only as the exit condition handles both cases.
 
@@ -173,7 +173,7 @@ Combine it with Lab 05 and the shape of a real system appears: workflow tools lo
 
 ## Exercises
 
-1. Add a `mark_complete()` tool that the agent calls when it's satisfied all steps are done. Observe how the loop terminates differently.
+1. Add a `mark_complete()` tool that the agent calls once it decides all steps are done. Observe how the loop terminates differently.
 2. Persist state to a JSON file so the agent can resume after a crash. Add a `--resume` flag to `agent.py`.
 3. Add a `web_search(query)` tool (using the `httpx` library and a real search API) and ask the agent to research a current event.
 4. Parallelize step execution: identify which findings don't depend on each other and run those `record_finding` calls concurrently using `asyncio`.

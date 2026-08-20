@@ -1,4 +1,4 @@
-# Lab 05: MCP (Model Context Protocol)
+# Lab 05: MCP (model context protocol)
 
 **What you'll learn:** How to build an MCP server that exposes tools, and how to connect Claude to it so it discovers and calls those tools dynamically, without the tools being hardcoded in the client.
 
@@ -6,7 +6,7 @@ Lab 03's agentic loop had one structural weakness: the tools lived in the same f
 
 ## What makes MCP different from regular tool use
 
-In Labs 01–03, tools are defined in the same script that calls the model. With MCP, the tool definitions and implementations live in a separate process (the server). The client discovers them at runtime over a standard protocol. This separation enables:
+In Labs 01 to 03, tools are defined in the same script that calls the model. With MCP, the tool definitions and implementations live in a separate process (the server). The client discovers them at runtime over a standard protocol. This separation enables:
 
 - **Tool reuse**: any MCP-compatible client can use the same server
 - **Independent deployment**: update tools without touching model code
@@ -86,7 +86,7 @@ No hand-written JSON Schema here, unlike Lab 03. `MCPServer` builds the schema f
 logging.basicConfig(stream=sys.stderr, level=logging.INFO, format="[server] %(message)s")
 ```
 
-This is the one thing that will silently break your first MCP server. Under the stdio transport, **stdout is the protocol channel**: it carries JSON-RPC messages between client and server. A stray `print()` in a tool handler injects garbage into that stream and corrupts the session, usually with an error that points nowhere near the actual `print`. All diagnostics go to stderr, which is why you can watch them in Terminal 1 without disturbing anything.
+This is the one thing that will break your first MCP server without any obvious error. Under the stdio transport, **stdout is the protocol channel**: it carries JSON-RPC messages between client and server. A stray `print()` in a tool handler injects garbage into that stream and corrupts the session, usually with an error that points nowhere near the actual `print`. All diagnostics go to stderr, which is why you can watch them in Terminal 1 without disturbing anything.
 
 ### Step 3: Execute untrusted input safely
 
